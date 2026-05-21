@@ -5,7 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { toolkit as VerovioToolkit } from "verovio";
+export { toolkit as VerovioToolkit } from "verovio";
 export namespace Components {
+    interface JosephusSnippet {
+        "attachVerovioToolkit": (tk: VerovioToolkit) => Promise<void>;
+        "href": string;
+    }
     interface JosephusTimer {
         /**
           * @default this.debug ? 5 : 0
@@ -70,6 +76,12 @@ export interface JosephusTimerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLJosephusTimerElement;
 }
 declare global {
+    interface HTMLJosephusSnippetElement extends Components.JosephusSnippet, HTMLStencilElement {
+    }
+    var HTMLJosephusSnippetElement: {
+        prototype: HTMLJosephusSnippetElement;
+        new (): HTMLJosephusSnippetElement;
+    };
     interface HTMLJosephusTimerElementEventMap {
         "josephus-timer-state-changed": { state: JosephusTimerState | null };
         "josephus-timer-progress": { progress: JosephusTimerProgress };
@@ -95,11 +107,15 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-timer": HTMLJosephusTimerElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface JosephusSnippet {
+        "href"?: string;
+    }
     interface JosephusTimer {
         /**
           * @default this.debug ? 5 : 0
@@ -161,6 +177,9 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface JosephusSnippetAttributes {
+        "href": string;
+    }
     interface JosephusTimerAttributes {
         "debug": boolean;
         "secs": number;
@@ -180,6 +199,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
         "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
@@ -188,6 +208,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }

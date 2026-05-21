@@ -7,11 +7,25 @@
 
     <script type="module" src="/build/josephus.esm.js"></script>
     <script nomodule src="/build/josephus.js"></script>
+    <!--Load verovio-->
+    <script src="https://www.verovio.org/javascript/latest/verovio-toolkit-wasm.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', event => {
+        verovio.module.onRuntimeInitialized = async _ => {
+          let tk = new verovio.toolkit();
+          let snippets = document.querySelectorAll('josephus-snippet').forEach(snippet => {
+            snippet.attachVerovioToolkit(tk);
+          });
+        };
+      });
+    </script>
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
-    <josephus-timer id="test" debug="true"></josephus-timer>
-    <script>
+    <josephus-snippet href="https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei"></josephus-snippet>
+
+    <!--<josephus-timer id="test" debug="true"></josephus-timer>-->
+    <!--<script>
       const el = document.querySelector('#test');
       el.addEventListener('josephus-timer-state-changed', event => {
         console.log(event);
@@ -19,6 +33,6 @@
       el.addEventListener('josephus-timer-progress', event => {
         console.log(event);
       });
-    </script>
+    </script>-->
   </body>
 </html>
