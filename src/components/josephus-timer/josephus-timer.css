@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+:host(:state(warmup)) {
+  color: darkgreen;
+}
+
+:host(:state(timer)) {
+  /*text-color*/
+}
+
+:host(:state(danger)) {
+  color: darkred;
+}
