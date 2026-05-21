@@ -6,6 +6,50 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface JosephusTimer {
+        /**
+          * @default this.debug ? 5 : 0
+         */
+        "danger": number;
+        /**
+          * @default true
+         */
+        "debug": boolean;
+        /**
+          * @default this.debug ? 2 : 0
+         */
+        "overrun": number;
+        /**
+          * @default "Time's up!"
+         */
+        "overrunText": string;
+        /**
+          * @readonly 
+          * @default false
+         */
+        "paused": boolean;
+        /**
+          * @readonly
+         */
+        "runs": boolean;
+        /**
+          * @default this.debug ? 10 : 60
+         */
+        "secs": number;
+        /**
+          * @readonly
+         */
+        "started": boolean;
+        /**
+          * @readonly 
+          * @default null
+         */
+        "state": JosephusTimerState | null;
+        /**
+          * @default this.debug ? 3 : 0
+         */
+        "warmup": number;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -21,7 +65,29 @@ export namespace Components {
         "middle"?: string;
     }
 }
+export interface JosephusTimerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLJosephusTimerElement;
+}
 declare global {
+    interface HTMLJosephusTimerElementEventMap {
+        "josephus-timer-state-changed": { state: JosephusTimerState | null };
+        "josephus-timer-progress": { progress: JosephusTimerProgress };
+    }
+    interface HTMLJosephusTimerElement extends Components.JosephusTimer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLJosephusTimerElementEventMap>(type: K, listener: (this: HTMLJosephusTimerElement, ev: JosephusTimerCustomEvent<HTMLJosephusTimerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLJosephusTimerElementEventMap>(type: K, listener: (this: HTMLJosephusTimerElement, ev: JosephusTimerCustomEvent<HTMLJosephusTimerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLJosephusTimerElement: {
+        prototype: HTMLJosephusTimerElement;
+        new (): HTMLJosephusTimerElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -29,10 +95,57 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "josephus-timer": HTMLJosephusTimerElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface JosephusTimer {
+        /**
+          * @default this.debug ? 5 : 0
+         */
+        "danger"?: number;
+        /**
+          * @default true
+         */
+        "debug"?: boolean;
+        "onJosephus-timer-progress"?: (event: JosephusTimerCustomEvent<{ progress: JosephusTimerProgress }>) => void;
+        "onJosephus-timer-state-changed"?: (event: JosephusTimerCustomEvent<{ state: JosephusTimerState | null }>) => void;
+        /**
+          * @default this.debug ? 2 : 0
+         */
+        "overrun"?: number;
+        /**
+          * @default "Time's up!"
+         */
+        "overrunText"?: string;
+        /**
+          * @readonly 
+          * @default false
+         */
+        "paused"?: boolean;
+        /**
+          * @readonly
+         */
+        "runs"?: boolean;
+        /**
+          * @default this.debug ? 10 : 60
+         */
+        "secs"?: number;
+        /**
+          * @readonly
+         */
+        "started"?: boolean;
+        /**
+          * @readonly 
+          * @default null
+         */
+        "state"?: JosephusTimerState | null;
+        /**
+          * @default this.debug ? 3 : 0
+         */
+        "warmup"?: number;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -48,6 +161,18 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface JosephusTimerAttributes {
+        "debug": boolean;
+        "secs": number;
+        "warmup": number;
+        "danger": number;
+        "overrun": number;
+        "overrunText": string;
+        "state": JosephusTimerState | null;
+        "started": boolean;
+        "paused": boolean;
+        "runs": boolean;
+    }
     interface MyComponentAttributes {
         "first": string;
         "middle": string;
@@ -55,6 +180,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -62,6 +188,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }

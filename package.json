@@ -39,12 +39,17 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^4.27.1 || ^5.0.0-0",
-    "@stencil/vitest": "^1.8.3",
-    "@types/node": "^22.13.5",
-    "@vitest/browser-playwright": "^4.0.0",
-    "playwright": "^1.52.0",
-    "vitest": "^4.0.0"
+    "@stencil/core": "^4.43.4",
+    "@stencil/vitest": "^1.11.6",
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.19.19",
+    "@vitest/browser-playwright": "^4.1.7",
+    "playwright": "^1.60.0",
+    "vitest": "^4.1.7"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^6.0.3"
+  }
 }

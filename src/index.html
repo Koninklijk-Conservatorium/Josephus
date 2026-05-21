@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
@@ -10,5 +10,15 @@
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
+    <josephus-timer id="test" debug="true"></josephus-timer>
+    <script>
+      const el = document.querySelector('#test');
+      el.addEventListener('josephus-timer-state-changed', event => {
+        console.log(event);
+      });
+      el.addEventListener('josephus-timer-progress', event => {
+        console.log(event);
+      });
+    </script>
   </body>
 </html>
