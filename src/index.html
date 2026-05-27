@@ -11,18 +11,19 @@
     <script src="https://www.verovio.org/javascript/latest/verovio-toolkit-wasm.js" defer></script>
     <script>
       document.addEventListener('DOMContentLoaded', event => {
-        verovio.module.onRuntimeInitialized = async _ => {
-          let tk = new verovio.toolkit();
-          let snippets = document.querySelectorAll('josephus-snippet').forEach(snippet => {
-            snippet.attachVerovioToolkit(tk);
-          });
+        verovio.module.onRuntimeInitialized = async () => {
+          window.josephus ??= {};
+          window.josephus.verovio = new verovio.toolkit();
+          const event = new CustomEvent('josephus-verovio-initialized', { detail: 'dupa!' });
+          document.dispatchEvent(event);
         };
       });
     </script>
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
-    <josephus-snippet href="https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei"></josephus-snippet>
+    <josephus-task></josephus-task>
+    <!--<josephus-snippet href="https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei"></josephus-snippet>-->
 
     <!--<josephus-timer id="test" debug="true"></josephus-timer>-->
     <!--<script>

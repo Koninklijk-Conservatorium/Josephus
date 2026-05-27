@@ -1,12 +1,13 @@
-import { Component, Host, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Method, Prop, State, Watch, Listen } from '@stencil/core';
 import type { toolkit as VerovioToolkit, VerovioOptions } from 'verovio';
+import { VerovioComponent } from '../../utils/classes';
 
 @Component({
   tag: 'josephus-snippet',
   styleUrl: 'josephus-snippet.css',
   shadow: true,
 })
-export class JosephusSnippet {
+export class JosephusSnippet extends VerovioComponent {
   private $score!: HTMLDivElement;
   private layout: VerovioOptions = {
     adjustPageHeight: true,
@@ -18,11 +19,6 @@ export class JosephusSnippet {
   };
 
   @State() verovio: VerovioToolkit;
-
-  @Method()
-  attachVerovioToolkit(tk: VerovioToolkit) {
-    this.verovio = tk;
-  }
 
   @Prop() href: string;
 

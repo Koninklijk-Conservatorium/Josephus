@@ -8,5 +8,18 @@
  * to consume components of this package as outlined in the `README.md`.
  */
 
+import type Verovio from 'verovio/wasm';
+import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
+
+declare global {
+  interface Window {
+    verovio: { module: VerovioModule; toolkit: typeof VerovioToolkit };
+    josephus?: {
+      verovio?: VerovioToolkit;
+    };
+  }
+}
+
 export { format } from './utils/utils';
+export { VerovioComponent } from './utils/classes';
 export type * from './components.d.ts';
