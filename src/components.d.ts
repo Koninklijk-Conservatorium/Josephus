@@ -5,9 +5,16 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ScoreRepr } from "./components/josephus-task/josephus-task";
+export { ScoreRepr } from "./components/josephus-task/josephus-task";
 export namespace Components {
     interface JosephusSnippet {
-        "href": string;
+        "data": string | null;
+        "href": string | null;
+        /**
+          * @default ['label', 'audio', 'score']
+         */
+        "repr": ScoreRepr[];
     }
     interface JosephusTask {
         "loadData": (spec?: TaskSpec) => Promise<void>;
@@ -55,6 +62,8 @@ export namespace Components {
           * @default this.debug ? 3 : 0
          */
         "warmup": number;
+    }
+    interface JosephusVerovioComponent {
     }
     interface MyComponent {
         /**
@@ -106,6 +115,12 @@ declare global {
         prototype: HTMLJosephusTimerElement;
         new (): HTMLJosephusTimerElement;
     };
+    interface HTMLJosephusVerovioComponentElement extends Components.JosephusVerovioComponent, HTMLStencilElement {
+    }
+    var HTMLJosephusVerovioComponentElement: {
+        prototype: HTMLJosephusVerovioComponentElement;
+        new (): HTMLJosephusVerovioComponentElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -116,12 +131,18 @@ declare global {
         "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-task": HTMLJosephusTaskElement;
         "josephus-timer": HTMLJosephusTimerElement;
+        "josephus-verovio-component": HTMLJosephusVerovioComponentElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
     interface JosephusSnippet {
-        "href"?: string;
+        "data"?: string | null;
+        "href"?: string | null;
+        /**
+          * @default ['label', 'audio', 'score']
+         */
+        "repr"?: ScoreRepr[];
     }
     interface JosephusTask {
     }
@@ -171,6 +192,8 @@ declare namespace LocalJSX {
          */
         "warmup"?: number;
     }
+    interface JosephusVerovioComponent {
+    }
     interface MyComponent {
         /**
           * The first name
@@ -187,7 +210,8 @@ declare namespace LocalJSX {
     }
 
     interface JosephusSnippetAttributes {
-        "href": string;
+        "href": string | null;
+        "data": string | null;
     }
     interface JosephusTimerAttributes {
         "debug": boolean;
@@ -211,6 +235,7 @@ declare namespace LocalJSX {
         "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
         "josephus-task": JosephusTask;
         "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
+        "josephus-verovio-component": JosephusVerovioComponent;
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -221,6 +246,7 @@ declare module "@stencil/core" {
             "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-task": LocalJSX.IntrinsicElements["josephus-task"] & JSXBase.HTMLAttributes<HTMLJosephusTaskElement>;
             "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;
+            "josephus-verovio-component": LocalJSX.IntrinsicElements["josephus-verovio-component"] & JSXBase.HTMLAttributes<HTMLJosephusVerovioComponentElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }

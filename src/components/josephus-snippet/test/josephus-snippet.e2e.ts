@@ -9,3 +9,6 @@ describe('josephus-snippet', () => {
     expect(element).toHaveClass('hydrated');
   });
 });
+
+// TEST: .data displayed when provided.
+// TEST: href display .ref when no .data provided

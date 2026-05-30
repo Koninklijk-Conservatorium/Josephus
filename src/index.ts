@@ -8,7 +8,6 @@
  * to consume components of this package as outlined in the `README.md`.
  */
 
-import type Verovio from 'verovio/wasm';
 import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
 
 declare global {
