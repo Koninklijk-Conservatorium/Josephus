@@ -1,6 +1,5 @@
 import { Component, h, State, Method } from '@stencil/core';
-import { toolkit as VerovioToolkit } from 'verovio';
-import { VerovioComponent } from '../../utils/classes';
+import { JosephusComponent } from '../../utils/JosephusComponent';
 
 type ScoreSpec = {
   source: 'local' | 'remote' | 'm21j';
@@ -41,7 +40,7 @@ type TaskSpec = {
   styleUrl: 'josephus-task.css',
   shadow: true,
 })
-export class JosephusTask extends VerovioComponent {
+export class JosephusTask extends JosephusComponent {
   @State() spec: TaskSpec | undefined = {
     scores: [
       {
@@ -75,15 +74,13 @@ export class JosephusTask extends VerovioComponent {
         features: ['score'],
         repr: ['score'],
         gui: 'quiz',
-        items: 4,
+        items: 1,
         description: 'Pick an answer:',
       },
     },
   };
 
   @State() scores: string[];
-
-  @State() verovio: VerovioToolkit | undefined = window.josephus?.verovio;
 
   private async loadRemoteData(href: string, cb: (string) => void) {
     await fetch(href)
@@ -105,7 +102,12 @@ export class JosephusTask extends VerovioComponent {
   }
 
   async componentWillRender() {
+    // if (!(this.verovio || this.tone)) return;
     await this.loadData();
+  }
+
+  componentDidLoad() {
+    super.componentDidLoad();
   }
 
   render() {
@@ -132,16 +134,14 @@ export class JosephusTask extends VerovioComponent {
                     return scores.map(score => <josephus-snippet data={score}></josephus-snippet>);
                   case 'quiz':
                     return Array.from({ length: field.items }, (_, i) =>
-                      scores.map((score, i) => {
-                        return (
-                          <div>
-                            <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
-                            <label htmlFor={`josephus-quiz-choice${i}`}>
-                              <josephus-snippet data={score} repr={field.repr} />
-                            </label>
-                          </div>
-                        );
-                      }),
+                      scores.map(score => (
+                        <div>
+                          <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
+                          <label htmlFor={`josephus-quiz-choice${i}`}>
+                            <josephus-snippet data={score} repr={field.repr} />
+                          </label>
+                        </div>
+                      )),
                     );
                   default:
                   // gui satisfies never;

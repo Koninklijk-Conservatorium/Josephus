@@ -47,10 +47,12 @@
     "@types/verovio": "^5.1.0",
     "@vitest/browser-playwright": "^4.1.7",
     "playwright": "^1.60.0",
+    "tone": "^15.1.22",
     "vitest": "^4.1.7"
   },
   "license": "MIT",
   "dependencies": {
+    "@tonejs/midi": "^2.0.28",
     "typescript": "^6.0.3"
   }
 }
