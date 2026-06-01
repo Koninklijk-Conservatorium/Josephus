@@ -11,19 +11,16 @@ import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
 import type * as Tone from 'tone';
 import type { Midi } from '@tonejs/midi';
 
-export interface Josephus {
+export type Josephus = {
   verovio: VerovioToolkit;
   tone: typeof Tone;
-}
+  midi: typeof Midi;
+};
 
 declare global {
   interface Window {
     verovio: { module: VerovioModule; toolkit: typeof VerovioToolkit };
-    josephus?: {
-      verovio?: VerovioToolkit;
-      tone?: typeof Tone;
-      midi: typeof Midi;
-    };
+    josephus?: Josephus;
   }
 }
 

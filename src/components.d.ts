@@ -8,6 +8,9 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ScoreRepr } from "./components/josephus-task/josephus-task";
 export { ScoreRepr } from "./components/josephus-task/josephus-task";
 export namespace Components {
+    interface JosephusAudio {
+        "midi": string;
+    }
     interface JosephusBaseComponent {
     }
     interface JosephusSnippet {
@@ -19,7 +22,7 @@ export namespace Components {
         "repr": ScoreRepr[];
     }
     interface JosephusTask {
-        "loadData": (spec?: TaskSpec) => Promise<void>;
+        "load": (spec: TaskSpec) => Promise<void>;
     }
     interface JosephusTimer {
         /**
@@ -85,6 +88,12 @@ export interface JosephusTimerCustomEvent<T> extends CustomEvent<T> {
     target: HTMLJosephusTimerElement;
 }
 declare global {
+    interface HTMLJosephusAudioElement extends Components.JosephusAudio, HTMLStencilElement {
+    }
+    var HTMLJosephusAudioElement: {
+        prototype: HTMLJosephusAudioElement;
+        new (): HTMLJosephusAudioElement;
+    };
     interface HTMLJosephusBaseComponentElement extends Components.JosephusBaseComponent, HTMLStencilElement {
     }
     var HTMLJosephusBaseComponentElement: {
@@ -128,6 +137,7 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "josephus-audio": HTMLJosephusAudioElement;
         "josephus-base-component": HTMLJosephusBaseComponentElement;
         "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-task": HTMLJosephusTaskElement;
@@ -136,6 +146,9 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface JosephusAudio {
+        "midi"?: string;
+    }
     interface JosephusBaseComponent {
     }
     interface JosephusSnippet {
@@ -209,6 +222,9 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface JosephusAudioAttributes {
+        "midi": string;
+    }
     interface JosephusSnippetAttributes {
         "href": string | null;
         "data": string | null;
@@ -232,6 +248,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "josephus-audio": Omit<JosephusAudio, keyof JosephusAudioAttributes> & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes]?: JosephusAudio[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `attr:${K}`]?: JosephusAudioAttributes[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `prop:${K}`]?: JosephusAudio[K] };
         "josephus-base-component": JosephusBaseComponent;
         "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
         "josephus-task": JosephusTask;
@@ -243,6 +260,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "josephus-audio": LocalJSX.IntrinsicElements["josephus-audio"] & JSXBase.HTMLAttributes<HTMLJosephusAudioElement>;
             "josephus-base-component": LocalJSX.IntrinsicElements["josephus-base-component"] & JSXBase.HTMLAttributes<HTMLJosephusBaseComponentElement>;
             "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-task": LocalJSX.IntrinsicElements["josephus-task"] & JSXBase.HTMLAttributes<HTMLJosephusTaskElement>;

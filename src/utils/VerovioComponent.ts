@@ -1,0 +1,20 @@
+import { Component, Listen, State } from '@stencil/core';
+import type { toolkit as VerovioToolkit } from 'verovio';
+
+@Component({
+  tag: 'josephus-base-component',
+  shadow: true,
+})
+export abstract class VerovioComponent {
+  @State() verovio: VerovioToolkit | undefined = window.josephus.verovio;
+
+  @Listen('josephus-verovio-initialized', { target: 'document' })
+  verovioInitHandler(_event) {
+    this.verovio = window.josephus.verovio;
+    this.verovioHasLoaded();
+  }
+
+  abstract verovioHasLoaded();
+
+  componentDidLoad() {}
+}

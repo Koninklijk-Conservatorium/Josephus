@@ -1,5 +1,5 @@
 import { Component, h, State, Method } from '@stencil/core';
-import { JosephusComponent } from '../../utils/JosephusComponent';
+import { VerovioComponent } from '../../utils/VerovioComponent';
 
 type ScoreSpec = {
   source: 'local' | 'remote' | 'm21j';
@@ -40,7 +40,7 @@ type TaskSpec = {
   styleUrl: 'josephus-task.css',
   shadow: true,
 })
-export class JosephusTask extends JosephusComponent {
+export class JosephusTask extends VerovioComponent {
   @State() spec: TaskSpec | undefined = {
     scores: [
       {
@@ -89,7 +89,7 @@ export class JosephusTask extends JosephusComponent {
   }
 
   @Method()
-  async loadData(spec: TaskSpec = this.spec) {
+  async load(spec: TaskSpec) {
     // const scoresTXT = spec.scores.map(scoreSpec => {
     // This function should handle various data retrieval methods (files, music21j etc).
     const scores = [];
@@ -101,9 +101,11 @@ export class JosephusTask extends JosephusComponent {
     this.scores = scores;
   }
 
+  verovioHasLoaded() {}
+
   async componentWillRender() {
     // if (!(this.verovio || this.tone)) return;
-    await this.loadData();
+    await this.load(this.spec);
   }
 
   componentDidLoad() {
@@ -128,7 +130,6 @@ export class JosephusTask extends JosephusComponent {
                 // Load field's display.
                 const scores = field.scores.map((_, i) => this.scores[i]); // dummy score reference for now.
                 const gui: JosephusGUI = field.gui ?? 'display';
-
                 switch (gui) {
                   case 'display':
                     return scores.map(score => <josephus-snippet data={score}></josephus-snippet>);
