@@ -1,14 +1,70 @@
 import { Component, h, State, Method } from '@stencil/core';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 
+const AVAILABLE_SOURCES = ['chorales-bach', 'chorales-praetorius'] as const;
+
 type ScoreSpec = {
-  source: 'local' | 'remote' | 'm21j';
-  path: string; // TO DO: "path?"
-  params: {
-    fileName: string;
-    entity: 'score';
-  };
+  source: (typeof AVAILABLE_SOURCES)[number];
+  fileName?: string;
+  entity: 'score';
 };
+
+type ResponceAPI = {
+  fileNameInDir: string;
+  fileContent: string;
+};
+
+type Library = {
+  type: 'remote' | 'local';
+  path: string; // URL
+  fileNamePattern: string; // Regexp
+  resp: ResponceAPI;
+};
+
+const githubResp: ResponceAPI = {
+  fileNameInDir: 'name',
+  fileContent: 'content',
+};
+
+const libraries: Record<string, Library> = {
+  'chorales-bach': {
+    type: 'remote',
+    path: 'https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData',
+    fileNamePattern: 'Chorales_Bach_\\d\\d\\d\\.krn',
+    resp: githubResp,
+  },
+  'chorales-praetorius': {
+    type: 'remote',
+    path: 'https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData',
+    fileNamePattern: 'Chorales_Praetorius_\\d\\d\\d\\.krn',
+    resp: githubResp,
+  },
+};
+
+class MusicSource {
+  private lib: (typeof libraries)[string];
+  constructor(public spec: ScoreSpec) {
+    console.log(spec.source);
+    this.lib = libraries[spec.source];
+  }
+
+  async retrieve() {
+    const resp = this.lib.resp;
+    const fileName =
+      this.spec.fileName ??
+      (await (async () => {
+        const p = new RegExp(this.lib.fileNamePattern);
+        const filesAll = await fetch(this.lib.path).then(r => r.json());
+        const files = filesAll.filter(f => p.test(f[resp.fileNameInDir]));
+        const index = (Math.random() * files.length) | 0;
+        const file = files[index];
+        return file.name;
+      })());
+    const href = this.lib.path + '/' + fileName;
+    const file = await fetch(href).then(resp => resp.json());
+    return atob(file[resp.fileContent]); // .content: github API specific.
+  }
+}
 
 export type ScoreRepr = 'score' | 'audio' | 'label';
 type ScoreFeature = 'score' | 'pitches' | 'rhythms' | 'chords';
@@ -44,20 +100,11 @@ export class JosephusTask extends VerovioComponent {
   @State() spec: TaskSpec | undefined = {
     scores: [
       {
-        source: 'remote',
-        path: 'https://www.verovio.org/examples/downloads/',
-        params: {
-          fileName: 'Schubert_Lindenbaum.mei',
-          entity: 'score',
-        },
-      },
-      {
-        source: 'remote',
-        path: 'https://www.verovio.org/examples/downloads/',
-        params: {
-          fileName: 'Schubert_Lindenbaum.mei',
-          entity: 'score',
-        },
+        source: 'chorales-praetorius',
+        // fileName: 'Chorales_Bach_093.krn',
+        // path: 'https://www.verovio.org/examples/downloads/',
+        // fileName: 'Schubert_Lindenbaum.mei',
+        entity: 'score',
       },
     ],
     fields: {
@@ -74,13 +121,15 @@ export class JosephusTask extends VerovioComponent {
         features: ['score'],
         repr: ['score'],
         gui: 'quiz',
-        items: 1,
+        items: 2,
         description: 'Pick an answer:',
       },
     },
   };
 
   @State() scores: string[];
+
+  private DO_NOT_RENDER = false;
 
   private async loadRemoteData(href: string, cb: (string) => void) {
     await fetch(href)
@@ -94,14 +143,14 @@ export class JosephusTask extends VerovioComponent {
     // This function should handle various data retrieval methods (files, music21j etc).
     const scores = [];
     for await (let scoreSpec of spec.scores) {
-      const href = scoreSpec.path + scoreSpec.params.fileName;
-      await this.loadRemoteData(href, scoreTXT => scores.push(scoreTXT));
+      const source = new MusicSource(scoreSpec);
+      const score = await source.retrieve();
+      this.loadData(score);
+      scores.push(this.verovio.getMEI());
     }
     this.spec ??= spec;
     this.scores = scores;
   }
-
-  verovioHasLoaded() {}
 
   async componentWillRender() {
     // if (!(this.verovio || this.tone)) return;
@@ -124,26 +173,27 @@ export class JosephusTask extends VerovioComponent {
             <div>
               {(() => {
                 if (!this.spec) return <div>No spec provided.</div>;
-                const field = this.spec.fields[fieldName];
-                if (!field) return <div>Unknown spec: {fieldName}</div>;
+                else if (!this.spec.fields[fieldName]) return <div>Unknown spec: {fieldName}</div>;
+                if (this.DO_NOT_RENDER) return;
 
-                // Load field's display.
+                const field = this.spec.fields[fieldName];
                 const scores = field.scores.map((_, i) => this.scores[i]); // dummy score reference for now.
                 const gui: JosephusGUI = field.gui ?? 'display';
+
                 switch (gui) {
                   case 'display':
                     return scores.map(score => <josephus-snippet data={score}></josephus-snippet>);
                   case 'quiz':
-                    return Array.from({ length: field.items }, (_, i) =>
-                      scores.map(score => (
-                        <div>
-                          <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
-                          <label htmlFor={`josephus-quiz-choice${i}`}>
+                    return Array.from({ length: field.items }, (_, i) => i).map(i => (
+                      <div>
+                        <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
+                        <label htmlFor={`josephus-quiz-choice${i}`}>
+                          {scores.map(score => (
                             <josephus-snippet data={score} repr={field.repr} />
-                          </label>
-                        </div>
-                      )),
-                    );
+                          ))}
+                        </label>
+                      </div>
+                    ));
                   default:
                   // gui satisfies never;
                 }
@@ -157,20 +207,3 @@ export class JosephusTask extends VerovioComponent {
     );
   }
 }
-
-// // Load field's display.
-// const scores = field.scores.map((_, i) => this.scores[i]); // dummy score reference for now.
-// const gui: JosephusGUI = field.gui ?? 'display';
-
-// switch (gui) {
-//   case 'display':
-//     return scores.map(score => <josephus-snippet data={score}></josephus-snippet>);
-//   case 'quiz':
-//     return scores.map(score => <fieldset></fieldset>);
-//   default:
-//   // gui satisfies never;
-// }
-
-// return <div>Cannot load field "{fieldName}".</div>;
-// }
-// )}

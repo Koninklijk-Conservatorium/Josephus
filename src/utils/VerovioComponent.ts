@@ -1,5 +1,5 @@
 import { Component, Listen, State } from '@stencil/core';
-import type { toolkit as VerovioToolkit } from 'verovio';
+import type { toolkit as VerovioToolkit, VerovioOptions } from 'verovio';
 
 @Component({
   tag: 'josephus-base-component',
@@ -11,10 +11,13 @@ export abstract class VerovioComponent {
   @Listen('josephus-verovio-initialized', { target: 'document' })
   verovioInitHandler(_event) {
     this.verovio = window.josephus.verovio;
-    this.verovioHasLoaded();
   }
 
-  abstract verovioHasLoaded();
+  loadData(data: string, options: VerovioOptions = {}) {
+    this.verovio.resetOptions();
+    this.verovio.setOptions(options);
+    this.verovio.loadData(data);
+  }
 
   componentDidLoad() {}
 }

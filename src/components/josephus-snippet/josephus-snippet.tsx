@@ -1,4 +1,4 @@
-import { Component, h, Prop, Watch } from '@stencil/core';
+import { Component, h, Prop } from '@stencil/core';
 import type { VerovioOptions } from 'verovio';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 
@@ -12,8 +12,6 @@ type ScoreSVG = string;
   shadow: true,
 })
 export class JosephusSnippet extends VerovioComponent {
-  private $score!: HTMLDivElement;
-
   private layout: VerovioOptions = {
     adjustPageHeight: true,
     adjustPageWidth: true,
@@ -26,19 +24,6 @@ export class JosephusSnippet extends VerovioComponent {
   @Prop() href: string | null;
   @Prop() data: string | null;
   @Prop() repr: ScoreRepr[] = ['label', 'audio', 'score'];
-
-  @Watch('verovio')
-  verovioHasLoaded() {
-    // this.loadData();
-  }
-
-  @Watch('data')
-  loadData(oldData = null, newData = null) {
-    if (oldData && newData && newData === oldData) return;
-    this.verovio.loadData(this.data);
-    this.verovio.resetOptions();
-    this.verovio.setOptions(this.layout);
-  }
 
   get score() {
     // SVG needs to be attached directly to innerHTML.
@@ -60,7 +45,7 @@ export class JosephusSnippet extends VerovioComponent {
     this.data ??= await fetch(this.href)
       .then(resp => resp.text())
       .then(scoreTXT => scoreTXT);
-    this.loadData();
+    this.loadData(this.data, this.layout);
   }
 
   render() {
@@ -76,11 +61,4 @@ export class JosephusSnippet extends VerovioComponent {
       }
     });
   }
-}
-
-{
-  /*{() => {
-  return <div>"dupa"</div>;
-
-}}*/
 }
