@@ -57,6 +57,6 @@ export class JosephusAudio {
   }
 
   render() {
-    return <button onClick={() => this.play()}>{this.midi}</button>;
+    return <button onClick={() => this.play()}>PLAY AUDIO</button>;
   }
 }

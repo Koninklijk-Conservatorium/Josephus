@@ -2,8 +2,6 @@ import { Component, h, Prop } from '@stencil/core';
 import type { VerovioOptions } from 'verovio';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 
-import type { ScoreRepr } from '../josephus-task/josephus-task';
-
 type ScoreSVG = string;
 
 @Component({
@@ -22,7 +20,7 @@ export class JosephusSnippet extends VerovioComponent {
   };
 
   @Prop() href: string | null;
-  @Prop() data: string | null;
+  @Prop({ mutable: true }) data: string | null;
   @Prop() repr: ScoreRepr[] = ['label', 'audio', 'score'];
 
   get score() {

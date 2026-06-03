@@ -1,0 +1,33 @@
+{
+  "chorales-bach": {
+    "type": "dir",
+    "path": "https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData",
+    "fileNamePattern": "Chorales_Bach_\\d\\d\\d\\.krn",
+    "resp": {
+      "type": "json",
+      "fileNameInDir": "name",
+      "fileContent": "content"
+    }
+  },
+  "chorales-praetorius": {
+    "type": "dir",
+    "path": "https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData",
+    "fileNamePattern": "Chorales_Praetorius_\\d\\d\\d\\.krn",
+    "resp": {
+      "type": "json",
+      "fileNameInDir": "name",
+      "fileContent": "content"
+    }
+  },
+  "schubert": {
+    "type": "file",
+    "path": "https://www.verovio.org/examples/downloads",
+    "fileNamePattern": ".",
+    "filesSelected": ["Schubert_Lindenbaum.mei"],
+    "resp": {
+      "type": "text",
+      "fileNameInDir": "",
+      "fileContent": ""
+    }
+  }
+}

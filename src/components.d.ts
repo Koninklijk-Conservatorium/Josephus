@@ -5,13 +5,17 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ScoreRepr } from "./components/josephus-task/josephus-task";
-export { ScoreRepr } from "./components/josephus-task/josephus-task";
 export namespace Components {
     interface JosephusAudio {
         "midi": string;
     }
     interface JosephusBaseComponent {
+    }
+    interface JosephusChallenge {
+        "load": (spec: ChallengeSpec) => Promise<void>;
+    }
+    interface JosephusExam {
+        "href": string;
     }
     interface JosephusSnippet {
         "data": string | null;
@@ -100,6 +104,18 @@ declare global {
         prototype: HTMLJosephusBaseComponentElement;
         new (): HTMLJosephusBaseComponentElement;
     };
+    interface HTMLJosephusChallengeElement extends Components.JosephusChallenge, HTMLStencilElement {
+    }
+    var HTMLJosephusChallengeElement: {
+        prototype: HTMLJosephusChallengeElement;
+        new (): HTMLJosephusChallengeElement;
+    };
+    interface HTMLJosephusExamElement extends Components.JosephusExam, HTMLStencilElement {
+    }
+    var HTMLJosephusExamElement: {
+        prototype: HTMLJosephusExamElement;
+        new (): HTMLJosephusExamElement;
+    };
     interface HTMLJosephusSnippetElement extends Components.JosephusSnippet, HTMLStencilElement {
     }
     var HTMLJosephusSnippetElement: {
@@ -139,6 +155,8 @@ declare global {
     interface HTMLElementTagNameMap {
         "josephus-audio": HTMLJosephusAudioElement;
         "josephus-base-component": HTMLJosephusBaseComponentElement;
+        "josephus-challenge": HTMLJosephusChallengeElement;
+        "josephus-exam": HTMLJosephusExamElement;
         "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-task": HTMLJosephusTaskElement;
         "josephus-timer": HTMLJosephusTimerElement;
@@ -150,6 +168,11 @@ declare namespace LocalJSX {
         "midi"?: string;
     }
     interface JosephusBaseComponent {
+    }
+    interface JosephusChallenge {
+    }
+    interface JosephusExam {
+        "href"?: string;
     }
     interface JosephusSnippet {
         "data"?: string | null;
@@ -225,6 +248,9 @@ declare namespace LocalJSX {
     interface JosephusAudioAttributes {
         "midi": string;
     }
+    interface JosephusExamAttributes {
+        "href": string;
+    }
     interface JosephusSnippetAttributes {
         "href": string | null;
         "data": string | null;
@@ -250,6 +276,8 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "josephus-audio": Omit<JosephusAudio, keyof JosephusAudioAttributes> & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes]?: JosephusAudio[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `attr:${K}`]?: JosephusAudioAttributes[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `prop:${K}`]?: JosephusAudio[K] };
         "josephus-base-component": JosephusBaseComponent;
+        "josephus-challenge": JosephusChallenge;
+        "josephus-exam": Omit<JosephusExam, keyof JosephusExamAttributes> & { [K in keyof JosephusExam & keyof JosephusExamAttributes]?: JosephusExam[K] } & { [K in keyof JosephusExam & keyof JosephusExamAttributes as `attr:${K}`]?: JosephusExamAttributes[K] } & { [K in keyof JosephusExam & keyof JosephusExamAttributes as `prop:${K}`]?: JosephusExam[K] };
         "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
         "josephus-task": JosephusTask;
         "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
@@ -262,6 +290,8 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "josephus-audio": LocalJSX.IntrinsicElements["josephus-audio"] & JSXBase.HTMLAttributes<HTMLJosephusAudioElement>;
             "josephus-base-component": LocalJSX.IntrinsicElements["josephus-base-component"] & JSXBase.HTMLAttributes<HTMLJosephusBaseComponentElement>;
+            "josephus-challenge": LocalJSX.IntrinsicElements["josephus-challenge"] & JSXBase.HTMLAttributes<HTMLJosephusChallengeElement>;
+            "josephus-exam": LocalJSX.IntrinsicElements["josephus-exam"] & JSXBase.HTMLAttributes<HTMLJosephusExamElement>;
             "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-task": LocalJSX.IntrinsicElements["josephus-task"] & JSXBase.HTMLAttributes<HTMLJosephusTaskElement>;
             "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;

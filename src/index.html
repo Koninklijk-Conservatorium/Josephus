@@ -10,6 +10,7 @@
     <script src="https://www.verovio.org/javascript/latest/verovio-toolkit-hum.js" defer></script>
     <script src="http://unpkg.com/tone"></script>
     <script src="https://unpkg.com/@tonejs/midi"></script>
+    <!--<josephus-library></josephus-library>-->
     <script>
       document.addEventListener('DOMContentLoaded', event => {
         // Initialize Josephus itself.
@@ -21,6 +22,13 @@
         window.josephus.midi = Midi;
         document.dispatchEvent(new CustomEvent('josephus-tonemidi-initialized'));
 
+        fetch('stubs/library.json')
+          .then(r => r.json())
+          .then(lib => {
+            window.josephus.library = lib;
+            document.dispatchEvent(new CustomEvent('josephus-library-initialized'));
+          });
+
         verovio.module.onRuntimeInitialized = async () => {
           window.josephus.verovio = new verovio.toolkit();
           document.dispatchEvent(new CustomEvent('josephus-verovio-initialized'));
@@ -30,7 +38,7 @@
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
-    <josephus-task></josephus-task>
+    <josephus-exam href="stubs/exam.json"></josephus-exam>
     <!--<josephus-snippet href="https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei"></josephus-snippet>-->
 
     <!--<josephus-timer id="test" debug="true"></josephus-timer>-->

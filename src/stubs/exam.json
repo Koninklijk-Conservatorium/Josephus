@@ -1,0 +1,34 @@
+{
+  "challenges": [
+    {
+      "tasks": [
+        {
+          "scores": [
+            {
+              "source": "chorales-bach",
+              "entity": "score"
+            }
+          ],
+          "fields": {
+            "question": {
+              "scores": [0],
+              "features": ["score"],
+              "repr": ["score"],
+              "gui": "display",
+              "items": 1,
+              "description": "What is your answer?"
+            },
+            "answer": {
+              "scores": [0, 0],
+              "features": ["score"],
+              "repr": ["score"],
+              "gui": "quiz",
+              "items": 2,
+              "description": "Pick an answer:"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
