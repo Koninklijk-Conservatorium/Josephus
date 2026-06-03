@@ -1,6 +1,8 @@
-import { Component, h, State, Method, Prop } from '@stencil/core';
+import { Component, h, State, Method, Event, EventEmitter } from '@stencil/core';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 import { Score } from '../../utils/Score';
+
+export type JosephusTaskLoadingState = 'loading' | 'loaded';
 
 @Component({
   tag: 'josephus-task',
@@ -9,40 +11,16 @@ import { Score } from '../../utils/Score';
 })
 export class JosephusTask extends VerovioComponent {
   @State() scores: string[];
-  @State() spec: TaskSpec | undefined = {
-    // TO DO: turn it to 'State' again.
-    scores: [
-      {
-        source: 'chorales-bach',
-        // path: 'https://www.verovio.org/examples/downloads/',
-        // fileName: 'Schubert_Lindenbaum.mei',
-        entity: 'score',
-      },
-    ],
-    fields: {
-      question: {
-        scores: ['#scores/0'],
-        features: ['score'],
-        repr: ['score'],
-        gui: 'display',
-        items: 1,
-        description: 'What is your answer?',
-      },
-      answer: {
-        scores: ['#scores/0', '#scores/1'],
-        features: ['score'],
-        repr: ['score'],
-        gui: 'quiz',
-        items: 2,
-        description: 'Pick an answer:',
-      },
-    },
-  };
+  @State() spec: TaskSpec | undefined;
 
   private DO_NOT_RENDER = false;
 
+  @Event({ eventName: 'josephus-task-loading' })
+  taskLoading: EventEmitter<{ state: JosephusTaskLoadingState }>;
+
   @Method()
   async load(spec: TaskSpec) {
+    if (!spec) return;
     // const scoresTXT = spec.scores.map(scoreSpec => {
     // This function should handle various data retrieval methods (files, music21j etc).
     const scores = [];
@@ -58,7 +36,12 @@ export class JosephusTask extends VerovioComponent {
 
   async componentWillRender() {
     // if (!(this.verovio || this.tone)) return;
+
     await this.load(this.spec);
+  }
+
+  componentDidRender() {
+    if (this.spec) console.log('DID1111');
   }
 
   componentDidLoad() {

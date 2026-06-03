@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'josephus-exam',
@@ -7,27 +7,29 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
 })
 export class JosephusExam {
   private $challenge: any | undefined;
+
   @Prop() href: string;
+
   @State() spec: ExamSpec;
   @State() challenge: number | undefined = undefined;
 
-  startChallenge(i: number) {
+  private startChallenge(i: number) {
     this.challenge = i;
     // Component loads in challengeScreen().
     // Challenge spec loads in componentDidLoad().
   }
 
-  endChallenge() {
+  private endChallenge() {
     this.challenge = undefined;
     this.$challenge = undefined;
   }
 
-  examScreen() {
+  private examScreen() {
     this.$challenge;
     return this.spec.challenges.map((_, i) => <button onClick={() => this.startChallenge(i)}>Challenge {i + 1}</button>);
   }
 
-  challengeScreen() {
+  private challengeScreen() {
     return (
       <>
         <josephus-challenge ref={$ => (this.$challenge = $)}></josephus-challenge>

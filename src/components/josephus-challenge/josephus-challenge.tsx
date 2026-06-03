@@ -1,4 +1,5 @@
-import { Component, h, Listen, Method, State, type JSX } from '@stencil/core';
+import { Component, h, Method, State, type JSX } from '@stencil/core';
+import type { JosephusTaskLoadingState } from '../josephus-task/josephus-task';
 
 type ChallengeState = 'preparation' | 'started' | 'finished';
 
@@ -11,9 +12,28 @@ export class JosephusChallenge {
   private $timer: any;
   private $task: any; // HTMLJosephusTaskElement;
 
-  private handleTimer(event: CustomEvent) {
-    if (!(event.detail.progress === 'finished')) return;
+  private nextTask() {
+    const spec = this.spec.tasks[0]; // Dummy implementation.
+    this.$task.load(spec);
+  }
+
+  private handleTimer(timerProgressEvent: CustomEvent) {
+    if (!(timerProgressEvent.detail.progress === 'finished')) return;
     this.state = 'finished';
+  }
+
+  private handleTaskLoading(taskLoading: CustomEvent) {
+    const state: JosephusTaskLoadingState = taskLoading.detail.state;
+    switch (state) {
+      case 'loading':
+        this.$timer.pause();
+        break;
+      case 'loaded':
+        this.$timer.start();
+        break;
+      default:
+        state satisfies never;
+    }
   }
 
   @State() state: ChallengeState = 'preparation';
@@ -22,7 +42,7 @@ export class JosephusChallenge {
     this.spec = spec;
   }
 
-  preparationScreen() {
+  private preparationScreen() {
     const start = () => (this.state = 'started');
     return (
       <>
@@ -32,21 +52,18 @@ export class JosephusChallenge {
     );
   }
 
-  startedScreen() {
-    const next = async () => {
-      const spec = this.spec.tasks[0]; // Dummy implementation.
-      await this.$task.load(spec);
-    };
+  private startedScreen() {
+    const next = async () => this.nextTask();
     return (
       <>
         <josephus-timer ref={$ => (this.$timer = $)} onJosephus-timer-progress={e => this.handleTimer(e)} />
-        <josephus-task ref={$ => (this.$task = $)} />
+        <josephus-task ref={$ => (this.$task = $)} onJosephus-task-loading={e => this.handleTaskLoading(e)} />
         <button onClick={next}>Next task.</button>
       </>
     );
   }
 
-  finishedScreen() {
+  private finishedScreen() {
     const restart = () => (this.state = 'started');
     return (
       <>
@@ -57,13 +74,18 @@ export class JosephusChallenge {
     );
   }
 
-  renderScreen() {
+  private renderScreen() {
     const screens = {
       preparation: () => this.preparationScreen(),
       started: () => this.startedScreen(),
       finished: () => this.finishedScreen(),
     } satisfies Record<ChallengeState, () => JSX.Element>;
     return screens[this.state]();
+  }
+
+  componentDidRender() {
+    if (!this.$task) return;
+    this.nextTask();
   }
 
   render() {

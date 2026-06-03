@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
+export { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
 export namespace Components {
     interface JosephusAudio {
         "midi": string;
@@ -87,6 +89,10 @@ export namespace Components {
         "middle"?: string;
     }
 }
+export interface JosephusTaskCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLJosephusTaskElement;
+}
 export interface JosephusTimerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLJosephusTimerElement;
@@ -122,7 +128,18 @@ declare global {
         prototype: HTMLJosephusSnippetElement;
         new (): HTMLJosephusSnippetElement;
     };
+    interface HTMLJosephusTaskElementEventMap {
+        "josephus-task-loading": { state: JosephusTaskLoadingState };
+    }
     interface HTMLJosephusTaskElement extends Components.JosephusTask, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLJosephusTaskElementEventMap>(type: K, listener: (this: HTMLJosephusTaskElement, ev: JosephusTaskCustomEvent<HTMLJosephusTaskElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLJosephusTaskElementEventMap>(type: K, listener: (this: HTMLJosephusTaskElement, ev: JosephusTaskCustomEvent<HTMLJosephusTaskElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLJosephusTaskElement: {
         prototype: HTMLJosephusTaskElement;
@@ -183,6 +200,7 @@ declare namespace LocalJSX {
         "repr"?: ScoreRepr[];
     }
     interface JosephusTask {
+        "onJosephus-task-loading"?: (event: JosephusTaskCustomEvent<{ state: JosephusTaskLoadingState }>) => void;
     }
     interface JosephusTimer {
         /**

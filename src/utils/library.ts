@@ -13,14 +13,14 @@ export type Library = {
   resp: ResponceAPI;
 };
 
-const githubResp: ResponceAPI = {
-  type: 'json',
-  fileNameInDir: 'name',
-  fileContent: 'content',
-};
+// const githubResp: ResponceAPI = {
+//   type: 'json',
+//   fileNameInDir: 'name',
+//   fileContent: 'content',
+// };
 
-const singleFileResp: ResponceAPI = {
-  type: 'text',
-  fileNameInDir: '',
-  fileContent: '',
-};
+// const singleFileResp: ResponceAPI = {
+//   type: 'text',
+//   fileNameInDir: '',
+//   fileContent: '',
+// };
