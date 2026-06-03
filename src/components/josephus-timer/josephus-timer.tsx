@@ -7,6 +7,7 @@ type States<T extends string> = { [K in T]: boolean };
 
 // Typescript doesn't see a correct definition of this, so I shadow it.
 interface CustomStateSet extends Set<string> {}
+type JosephusTimeProgressEvent = EventEmitter<{ progress: JosephusTimerProgress }>;
 
 @Component({
   tag: 'josephus-timer',
@@ -42,7 +43,7 @@ export class JosephusTimer {
   }
 
   @Event({ eventName: 'josephus-timer-progress' })
-  timerProgress: EventEmitter<{ progress: JosephusTimerProgress }>;
+  timerProgress: JosephusTimeProgressEvent;
 
   private progress(progress: JosephusTimerProgress) {
     this.timerProgress.emit({ progress: progress });

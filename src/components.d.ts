@@ -130,7 +130,7 @@ declare global {
     };
     interface HTMLJosephusTimerElementEventMap {
         "josephus-timer-state-changed": { state: JosephusTimerState | null };
-        "josephus-timer-progress": { progress: JosephusTimerProgress };
+        "josephus-timer-progress": any;
     }
     interface HTMLJosephusTimerElement extends Components.JosephusTimer, HTMLStencilElement {
         addEventListener<K extends keyof HTMLJosephusTimerElementEventMap>(type: K, listener: (this: HTMLJosephusTimerElement, ev: JosephusTimerCustomEvent<HTMLJosephusTimerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -193,7 +193,7 @@ declare namespace LocalJSX {
           * @default true
          */
         "debug"?: boolean;
-        "onJosephus-timer-progress"?: (event: JosephusTimerCustomEvent<{ progress: JosephusTimerProgress }>) => void;
+        "onJosephus-timer-progress"?: (event: JosephusTimerCustomEvent<any>) => void;
         "onJosephus-timer-state-changed"?: (event: JosephusTimerCustomEvent<{ state: JosephusTimerState | null }>) => void;
         /**
           * @default this.debug ? 2 : 0
