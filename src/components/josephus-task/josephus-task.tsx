@@ -20,7 +20,7 @@ export class JosephusTask extends VerovioComponent {
 
   @Method()
   async load(spec: TaskSpec) {
-    if (!spec) return;
+    if (!(this.verovio && spec)) return;
     // const scoresTXT = spec.scores.map(scoreSpec => {
     // This function should handle various data retrieval methods (files, music21j etc).
     const scores = [];
@@ -35,48 +35,49 @@ export class JosephusTask extends VerovioComponent {
   }
 
   async componentWillRender() {
-    // if (!(this.verovio || this.tone)) return;
-
+    if (!(this.verovio && this.spec)) return;
     await this.load(this.spec);
   }
 
-  componentDidRender() {
-    if (this.spec) console.log('DID1111');
-  }
+  // componentDidRender() {}
 
   componentDidLoad() {
     super.componentDidLoad();
   }
 
+  renderField() {}
+
   render() {
+    if (!this.spec) return <div>JosephusTask: No spec provided.</div>;
+    const fields = Object.entries(this.spec.fields) as [keyof typeof this.spec.fields, FieldSpec][];
     return (
       <div>
-        {Object.keys(this.spec?.fields ?? {}).map(fieldName => (
+        {fields.map(field => (
           <fieldset>
             <legend>
-              <div>{fieldName.toUpperCase()}</div>
-              <div>{this.spec?.fields[fieldName]?.description ?? 'No description.'}</div>
+              <div>{field[0].toUpperCase()}</div>
+              <div>{field[1]?.description ?? 'No description.'}</div>
             </legend>
             <div>
               {(() => {
                 if (!this.spec) return <div>No spec provided.</div>;
-                else if (!this.spec.fields[fieldName]) return <div>Unknown spec: {fieldName}</div>;
+                else if (!field[1]) return <div>Unknown spec: {field[0]}</div>;
                 if (this.DO_NOT_RENDER) return;
 
-                const field = this.spec.fields[fieldName];
-                const scores = field.scores.map((_, i) => this.scores[i]); // dummy score reference for now.
-                const gui: JosephusGUI = field.gui ?? 'display';
+                // const field = this.spec.fields[fieldName];
+                const scores = field[1].scores.map((_, i) => this.scores[i]); // dummy score reference for now.
+                const gui: JosephusGUI = field[1].gui ?? 'display';
 
                 switch (gui) {
                   case 'display':
                     return scores.map(score => <josephus-snippet data={score} repr={['audio', 'label', 'score']}></josephus-snippet>);
                   case 'quiz':
-                    return Array.from({ length: field.items }, (_, i) => i).map(i => (
+                    return Array.from({ length: field[1].items }, (_, i) => i).map(i => (
                       <div>
                         <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
                         <label htmlFor={`josephus-quiz-choice${i}`}>
                           {scores.map(score => (
-                            <josephus-snippet data={score} repr={field.repr} />
+                            <josephus-snippet data={score} repr={field[1].repr} />
                           ))}
                         </label>
                       </div>
@@ -85,7 +86,7 @@ export class JosephusTask extends VerovioComponent {
                   // gui satisfies never;
                 }
 
-                return <div>Cannot load field "{fieldName}".</div>;
+                return <div>Cannot load field "{field[0]}".</div>;
               })()}
             </div>
           </fieldset>
