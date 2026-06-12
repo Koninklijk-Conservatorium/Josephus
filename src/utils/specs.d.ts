@@ -7,9 +7,12 @@ type ScoreSpec = {
 type ScoreRepr = 'score' | 'audio' | 'label';
 type ScoreFeature = 'score' | 'pitches' | 'rhythms' | 'chords';
 type ScoreLayout = 'full' | 'piano-staff' | 'single-staff';
+
+type FieldType = 'legend' | 'question' | 'answer';
 type JosephusGUI = 'display' | 'quiz' | 'connect' | 'order' | 'selection';
 
 type FieldSpec = {
+  type: FieldType;
   scores: string[]; // reference to scores loaded by task.
   repr: ScoreRepr[];
   features: ScoreFeature[];
@@ -22,11 +25,7 @@ type FieldSpec = {
 
 type TaskSpec = {
   scores: ScoreSpec[]; // List of scores, referred in fields using "#score/index".
-  fields: {
-    legend?: FieldSpec;
-    question: FieldSpec;
-    answer: FieldSpec;
-  };
+  fields: FieldSpec[];
 };
 
 type ChallengeSpec = {

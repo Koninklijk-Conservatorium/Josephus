@@ -9,8 +9,9 @@
               "entity": "score"
             }
           ],
-          "fields": {
-            "question": {
+          "fields": [
+            {
+              "type": "question",
               "scores": [0],
               "features": ["score"],
               "repr": ["score"],
@@ -18,7 +19,8 @@
               "items": 1,
               "description": "What is your answer?"
             },
-            "answer": {
+            {
+              "type": "answer",
               "scores": [0, 0],
               "features": ["score"],
               "repr": ["score"],
@@ -26,7 +28,7 @@
               "items": 2,
               "description": "Pick an answer:"
             }
-          }
+          ]
         }
       ]
     }

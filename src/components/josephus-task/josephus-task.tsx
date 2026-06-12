@@ -45,50 +45,50 @@ export class JosephusTask extends VerovioComponent {
     super.componentDidLoad();
   }
 
-  renderField() {}
+  renderQuiz(field: FieldSpec, scores: string[]) {
+    return Array.from({ length: field.items }, (_, i) => i).map(i => this.renderQuizField(i, field, scores));
+  }
+
+  renderQuizField(value: number | string, field: FieldSpec, scores: string[]) {
+    return (
+      <div>
+        <input type="radio" name="dummy" value={value} id={`josephus-quiz-choice-${value}`} />
+        <label htmlFor={`josephus-quiz-choice-${value}`}>
+          {scores.map(score => (
+            <josephus-snippet data={score} repr={field.repr} />
+          ))}
+        </label>
+      </div>
+    );
+  }
+
+  renderField(field: FieldSpec) {
+    if (this.DO_NOT_RENDER) return <div>Rendering turned off.</div>;
+    const scores = field.scores.map((_, i) => this.scores[i]); // TO DO: dummy score reference for now.
+    switch (field.gui) {
+      case 'display':
+        return scores.map(score => <josephus-snippet data={score} repr={field.repr}></josephus-snippet>);
+      case 'quiz':
+        return this.renderQuiz(field, scores);
+      default:
+        console.warn('No GUI provided for task field.');
+      // field.gui satisfies never;
+    }
+
+    return <div>Cannot load field "{field.type}".</div>;
+  }
 
   render() {
     if (!this.spec) return <div>JosephusTask: No spec provided.</div>;
-    const fields = Object.entries(this.spec.fields) as [keyof typeof this.spec.fields, FieldSpec][];
     return (
       <div>
-        {fields.map(field => (
+        {this.spec.fields.map(field => (
           <fieldset>
             <legend>
-              <div>{field[0].toUpperCase()}</div>
-              <div>{field[1]?.description ?? 'No description.'}</div>
+              <div>{field.type.toUpperCase()}</div>
+              <div>{field.description ?? 'No description.'}</div>
             </legend>
-            <div>
-              {(() => {
-                if (!this.spec) return <div>No spec provided.</div>;
-                else if (!field[1]) return <div>Unknown spec: {field[0]}</div>;
-                if (this.DO_NOT_RENDER) return;
-
-                // const field = this.spec.fields[fieldName];
-                const scores = field[1].scores.map((_, i) => this.scores[i]); // dummy score reference for now.
-                const gui: JosephusGUI = field[1].gui ?? 'display';
-
-                switch (gui) {
-                  case 'display':
-                    return scores.map(score => <josephus-snippet data={score} repr={['audio', 'label', 'score']}></josephus-snippet>);
-                  case 'quiz':
-                    return Array.from({ length: field[1].items }, (_, i) => i).map(i => (
-                      <div>
-                        <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice${i}`} />
-                        <label htmlFor={`josephus-quiz-choice${i}`}>
-                          {scores.map(score => (
-                            <josephus-snippet data={score} repr={field[1].repr} />
-                          ))}
-                        </label>
-                      </div>
-                    ));
-                  default:
-                  // gui satisfies never;
-                }
-
-                return <div>Cannot load field "{field[0]}".</div>;
-              })()}
-            </div>
+            <div>{this.renderField(field)}</div>
           </fieldset>
         ))}
       </div>

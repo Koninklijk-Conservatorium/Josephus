@@ -54,11 +54,13 @@ export class JosephusChallenge {
 
   private startedScreen() {
     const next = async () => this.nextTask();
+    const finish = () => (this.state = 'finished');
     return (
       <>
         <josephus-timer ref={$ => (this.$timer = $)} onJosephus-timer-progress={e => this.handleTimer(e)} />
         <josephus-task ref={$ => (this.$task = $)} onJosephus-task-loading={e => this.handleTaskLoading(e)} />
         <button onClick={next}>Next task.</button>
+        <button onClick={finish}>Finish challenge.</button>
       </>
     );
   }
@@ -89,12 +91,6 @@ export class JosephusChallenge {
   }
 
   render() {
-    const finish = () => (this.state = 'finished');
-    return (
-      <>
-        {this.renderScreen()}
-        <button onClick={finish}>Finish challenge.</button>
-      </>
-    );
+    return <>{this.renderScreen()}</>;
   }
 }
