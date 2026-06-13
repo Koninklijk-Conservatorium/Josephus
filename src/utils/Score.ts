@@ -4,6 +4,12 @@ export class Score {
   private lib: Library;
   private pattern: RegExp;
   constructor(public spec: ScoreSpec) {
+    // if (!window.josephus) {
+    //   console.error('Cannot load score – josephus is not initialized.');
+    //   this.lib = {};
+    //   this.pattern = new RegExp('');
+    //   return;
+    // }
     this.lib = window.josephus.library[spec.source];
     this.pattern = new RegExp(this.lib.fileNamePattern);
   }
