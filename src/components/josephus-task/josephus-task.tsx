@@ -77,9 +77,7 @@ export class JosephusTask extends VerovioComponent {
     const scores = field.scoreRefs.map(i => {
       const score: MEIDocument = this.scores[i];
       const extraction = field.extractor ? score[field.extractor] : score.clone();
-      console.log(field.filter);
       field.filter.forEach(f => {
-        console.log(extraction);
         extraction[`${f}Filter`]();
       });
       return extraction.toString();
