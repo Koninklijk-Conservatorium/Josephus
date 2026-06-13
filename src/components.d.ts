@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
+import { MEIDocument } from "./utils/mei";
 export { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
+export { MEIDocument } from "./utils/mei";
 export namespace Components {
     interface JosephusAudio {
         "midi": string;

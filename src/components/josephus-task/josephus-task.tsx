@@ -1,6 +1,7 @@
 import { Component, h, State, Method, Event, EventEmitter } from '@stencil/core';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 import { Score } from '../../utils/Score';
+import { MEIDocument } from '../../utils/mei';
 
 export type JosephusTaskLoadingState = 'loading' | 'loaded';
 
@@ -10,7 +11,7 @@ export type JosephusTaskLoadingState = 'loading' | 'loaded';
   shadow: true,
 })
 export class JosephusTask extends VerovioComponent {
-  @State() scores: string[];
+  @State() scores: MEIDocument[];
   @State() spec: TaskSpec | undefined;
 
   private DO_NOT_RENDER = false;
@@ -23,12 +24,14 @@ export class JosephusTask extends VerovioComponent {
     if (!(this.verovio && spec)) return;
     // const scoresTXT = spec.scores.map(scoreSpec => {
     // This function should handle various data retrieval methods (files, music21j etc).
-    const scores = [];
+    const scores: MEIDocument[] = [];
     for await (let scoreSpec of spec.scores) {
       const source = new Score(scoreSpec);
       const score = await source.retrieve();
       this.loadData(score);
-      scores.push(this.verovio.getMEI());
+      const mei = this.getMEI();
+      const doc = MEIDocument.parse(mei);
+      scores.push(doc);
     }
     this.spec ??= spec;
     this.scores = scores;
@@ -43,6 +46,10 @@ export class JosephusTask extends VerovioComponent {
 
   componentDidLoad() {
     super.componentDidLoad();
+  }
+
+  renderDisplay(field: FieldSpec, scores: string[]) {
+    return scores.map(score => <josephus-snippet data={score} repr={field.repr}></josephus-snippet>);
   }
 
   renderQuiz(field: FieldSpec, scores: string[]) {
@@ -64,15 +71,34 @@ export class JosephusTask extends VerovioComponent {
 
   renderField(field: FieldSpec) {
     if (this.DO_NOT_RENDER) return <div>Rendering turned off.</div>;
-    const scores = field.scores.map((_, i) => this.scores[i]); // TO DO: dummy score reference for now.
+    /**
+     * All scores in the field.
+     */
+    const scores = field.scoreRefs.map(i => {
+      const score: MEIDocument = this.scores[i];
+      const extraction = field.extractor ? score[field.extractor] : score.clone();
+      console.log(field.filter);
+      field.filter.forEach(f => {
+        console.log(extraction);
+        extraction[`${f}Filter`]();
+      });
+      return extraction.toString();
+    });
+
     switch (field.gui) {
       case 'display':
-        return scores.map(score => <josephus-snippet data={score} repr={field.repr}></josephus-snippet>);
+        return this.renderDisplay(field, scores);
       case 'quiz':
         return this.renderQuiz(field, scores);
+      case 'connect':
+        return <div>Connect GUI not implemented.</div>;
+      case 'order':
+        return <div>Order GUI not implemented.</div>;
+      case 'selection':
+        return <div>Selection GUI not implemented.</div>;
       default:
         console.warn('No GUI provided for task field.');
-      // field.gui satisfies never;
+        field.gui satisfies never;
     }
 
     return <div>Cannot load field "{field.type}".</div>;

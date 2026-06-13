@@ -12,8 +12,9 @@
           "fields": [
             {
               "type": "question",
-              "scores": [0],
-              "features": ["score"],
+              "scoreRefs": [0],
+              "extractor": null,
+              "filter": ["durations"],
               "repr": ["score"],
               "gui": "display",
               "items": 1,
@@ -21,8 +22,9 @@
             },
             {
               "type": "answer",
-              "scores": [0, 0],
-              "features": ["score"],
+              "scoreRefs": [0, 0],
+              "extractor": "pitches",
+              "filter": [],
               "repr": ["score"],
               "gui": "quiz",
               "items": 2,
