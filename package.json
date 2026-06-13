@@ -40,10 +40,10 @@
   },
   "devDependencies": {
     "@stencil/core": "^4.43.5",
-    "@stencil/vitest": "^1.12.1",
+    "@stencil/vitest": "^1.13.0",
     "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.3",
     "@types/verovio": "^5.1.0",
     "@vitest/browser-playwright": "^4.1.8",
     "playwright": "^1.60.0",
