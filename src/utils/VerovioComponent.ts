@@ -19,5 +19,9 @@ export abstract class VerovioComponent {
     this.verovio.loadData(data);
   }
 
+  getMEI() {
+    return this.verovio.getMEI();
+  }
+
   componentDidLoad() {}
 }
