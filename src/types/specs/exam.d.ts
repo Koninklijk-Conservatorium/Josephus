@@ -8,5 +8,6 @@ type ChallengeSpec = {
 };
 
 type ExamSpec = {
+  $schema: string;
   challenges: ChallengeSpec[];
 };

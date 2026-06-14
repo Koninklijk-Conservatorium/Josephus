@@ -32,6 +32,7 @@
     "loader/"
   ],
   "scripts": {
+    "prebuild": "ts-json-schema-generator -f \"\" -e \"all\" -p \"./src/types/specs/*.d.ts\" -i \"https://example.com/person.schema.json\" -t \"ExamSpec\" -o \"./src/schemas/exam.schema.json\"",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test --prod",
@@ -48,6 +49,7 @@
     "@vitest/browser-playwright": "^4.1.8",
     "playwright": "^1.60.0",
     "tone": "^15.1.22",
+    "ts-json-schema-generator": "^2.9.0",
     "vitest": "^4.1.8"
   },
   "license": "MIT",
