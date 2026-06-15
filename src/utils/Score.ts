@@ -1,5 +1,3 @@
-import { Library } from './library';
-
 export class Score {
   private lib: Library;
   private pattern: RegExp;

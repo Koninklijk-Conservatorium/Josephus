@@ -1,5 +1,5 @@
 {
-  "$schema": "../../schemas/exam.schema.json",
+  "$schema": "../../schemas/josephus-exam.schema.json",
   "challenges": [
     {
       "tasks": [

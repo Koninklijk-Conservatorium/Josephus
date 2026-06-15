@@ -1,13 +1,17 @@
 {
-  "schubert": {
-    "type": "file",
-    "path": "https://www.verovio.org/examples/downloads",
-    "fileNamePattern": ".",
-    "filesSelected": ["Schubert_Lindenbaum.mei"],
-    "resp": {
-      "type": "text",
-      "fileNameInDir": "",
-      "fileContent": ""
+  "$schema": "../../schemas/josephus-library.schema.json",
+
+  "library": {
+    "schubert": {
+      "type": "file",
+      "path": "https://www.verovio.org/examples/downloads",
+      "fileNamePattern": ".",
+      "filesSelected": ["Schubert_Lindenbaum.mei"],
+      "resp": {
+        "type": "text",
+        "fileNameInDir": "",
+        "fileContent": ""
+      }
     }
   }
 }

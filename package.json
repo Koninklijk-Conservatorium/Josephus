@@ -1,6 +1,6 @@
 {
   "name": "josephus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -32,7 +32,7 @@
     "loader/"
   ],
   "scripts": {
-    "prebuild": "ts-json-schema-generator -f \"\" -e \"all\" -p \"./src/types/specs/*.d.ts\" -i \"josephus/exam-spec\" -t \"ExamSpec\" -o \"./schemas/exam.schema.json\"",
+    "prebuild": "tsx ./scripts/build-schemas.ts",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test --prod",
@@ -50,6 +50,7 @@
     "playwright": "^1.60.0",
     "tone": "^15.1.22",
     "ts-json-schema-generator": "^2.9.0",
+    "tsx": "^4.22.4",
     "vitest": "^4.1.8"
   },
   "license": "MIT",

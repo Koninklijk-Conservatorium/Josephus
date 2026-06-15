@@ -1,25 +1,27 @@
-export type ResponceAPI = {
+type JosephusLibraryResponce = {
   type: 'json' | 'text';
   fileNameInDir: string;
   fileContent: string;
 };
 
-export type Library = {
+type Library = {
   type: 'file' | 'dir';
   path: string; // URL
   fileNamePattern?: string; // Regexp
   filesSelected?: string[];
   filesExcluded?: string[];
-  resp: ResponceAPI;
+  resp: JosephusLibraryResponce;
 };
 
-// const githubResp: ResponceAPI = {
+type JosephusLibrary = { library: Record<string, Library> };
+
+// const githubResp: JosephusLibraryResponce = {
 //   type: 'json',
 //   fileNameInDir: 'name',
 //   fileContent: 'content',
 // };
 
-// const singleFileResp: ResponceAPI = {
+// const singleFileResp: JosephusLibraryResponce = {
 //   type: 'text',
 //   fileNameInDir: '',
 //   fileContent: '',

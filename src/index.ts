@@ -11,8 +11,6 @@ import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
 import type * as Tone from 'tone';
 import type { Midi } from '@tonejs/midi';
 
-import { Library } from './utils/library';
-
 export type Josephus = {
   verovio: VerovioToolkit;
   tone: typeof Tone;

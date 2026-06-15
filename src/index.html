@@ -25,7 +25,7 @@
         fetch('stubs/library.json')
           .then(r => r.json())
           .then(lib => {
-            window.josephus.library = lib;
+            window.josephus.library = lib.library;
             document.dispatchEvent(new CustomEvent('josephus-library-initialized'));
           });
 

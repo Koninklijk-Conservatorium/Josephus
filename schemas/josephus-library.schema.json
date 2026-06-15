@@ -1,0 +1,33 @@
+{
+  "$id": "josephus-library",
+  "$ref": "#/definitions/JosephusLibrarySchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "JosephusLibraryResponce": {
+      "additionalProperties": false,
+      "properties": { "fileContent": { "type": "string" }, "fileNameInDir": { "type": "string" }, "type": { "enum": ["json", "text"], "type": "string" } },
+      "required": ["type", "fileNameInDir", "fileContent"],
+      "type": "object"
+    },
+    "JosephusLibrarySchema": {
+      "additionalProperties": false,
+      "properties": { "$schema": { "type": "string" }, "library": { "$ref": "#/definitions/Record%3Cstring%2CLibrary%3E" } },
+      "required": ["$schema", "library"],
+      "type": "object"
+    },
+    "Library": {
+      "additionalProperties": false,
+      "properties": {
+        "fileNamePattern": { "type": "string" },
+        "filesExcluded": { "items": { "type": "string" }, "type": "array" },
+        "filesSelected": { "items": { "type": "string" }, "type": "array" },
+        "path": { "type": "string" },
+        "resp": { "$ref": "#/definitions/JosephusLibraryResponce" },
+        "type": { "enum": ["file", "dir"], "type": "string" }
+      },
+      "required": ["type", "path", "resp"],
+      "type": "object"
+    },
+    "Record<string,Library>": { "additionalProperties": { "$ref": "#/definitions/Library" }, "type": "object" }
+  }
+}
