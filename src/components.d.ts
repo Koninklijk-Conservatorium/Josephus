@@ -76,20 +76,6 @@ export namespace Components {
          */
         "warmup": number;
     }
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
 }
 export interface JosephusTaskCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -165,12 +151,6 @@ declare global {
         prototype: HTMLJosephusTimerElement;
         new (): HTMLJosephusTimerElement;
     };
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
-    }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
-    };
     interface HTMLElementTagNameMap {
         "josephus-audio": HTMLJosephusAudioElement;
         "josephus-base-component": HTMLJosephusBaseComponentElement;
@@ -179,7 +159,6 @@ declare global {
         "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-task": HTMLJosephusTaskElement;
         "josephus-timer": HTMLJosephusTimerElement;
-        "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
@@ -250,20 +229,6 @@ declare namespace LocalJSX {
          */
         "warmup"?: number;
     }
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
 
     interface JosephusAudioAttributes {
         "midi": string;
@@ -287,11 +252,6 @@ declare namespace LocalJSX {
         "paused": boolean;
         "runs": boolean;
     }
-    interface MyComponentAttributes {
-        "first": string;
-        "middle": string;
-        "last": string;
-    }
 
     interface IntrinsicElements {
         "josephus-audio": Omit<JosephusAudio, keyof JosephusAudioAttributes> & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes]?: JosephusAudio[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `attr:${K}`]?: JosephusAudioAttributes[K] } & { [K in keyof JosephusAudio & keyof JosephusAudioAttributes as `prop:${K}`]?: JosephusAudio[K] };
@@ -301,7 +261,6 @@ declare namespace LocalJSX {
         "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
         "josephus-task": JosephusTask;
         "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
-        "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
 export { LocalJSX as JSX };
@@ -315,7 +274,6 @@ declare module "@stencil/core" {
             "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-task": LocalJSX.IntrinsicElements["josephus-task"] & JSXBase.HTMLAttributes<HTMLJosephusTaskElement>;
             "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;
-            "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
 }

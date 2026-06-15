@@ -32,7 +32,7 @@
     "loader/"
   ],
   "scripts": {
-    "prebuild": "ts-json-schema-generator -f \"\" -e \"all\" -p \"./src/types/specs/*.d.ts\" -i \"https://example.com/person.schema.json\" -t \"ExamSpec\" -o \"./src/schemas/exam.schema.json\"",
+    "prebuild": "ts-json-schema-generator -f \"\" -e \"all\" -p \"./src/types/specs/*.d.ts\" -i \"josephus/exam-spec\" -t \"ExamSpec\" -o \"./schemas/exam.schema.json\"",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test --prod",
