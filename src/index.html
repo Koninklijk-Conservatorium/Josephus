@@ -8,8 +8,18 @@
     <script nomodule src="/build/josephus.js"></script>
     <!--Load verovio-->
     <script src="https://www.verovio.org/javascript/latest/verovio-toolkit-hum.js" defer></script>
+    <!--Load Tone.js-->
     <script src="http://unpkg.com/tone"></script>
     <script src="https://unpkg.com/@tonejs/midi"></script>
+    <!--Load Music21J-->
+    <script>
+      window.m21conf = { loadSoundfont: false };
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/music21j/releases/music21j.css" />
+    <script src="https://cdn.jsdelivr.net/npm/music21j/releases/music21.debug.js"></script>
+    <script>
+      music21.common.urls.soundfontUrl = 'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts/FluidR3_GM/';
+    </script>
     <!--<josephus-library></josephus-library>-->
     <script>
       document.addEventListener('DOMContentLoaded', event => {
@@ -22,7 +32,10 @@
         window.josephus.midi = Midi;
         document.dispatchEvent(new CustomEvent('josephus-tonemidi-initialized'));
 
+        window.josephus.m21j = music21;
+
         fetch('stubs/library.json')
+          // fetch('https://cappellaboanerges.nl/josephus-library/library.json')
           .then(r => r.json())
           .then(lib => {
             window.josephus.library = lib.library;

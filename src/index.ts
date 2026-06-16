@@ -10,11 +10,13 @@
 import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
 import type * as Tone from 'tone';
 import type { Midi } from '@tonejs/midi';
+import type music21 from 'music21j';
 
 export type Josephus = {
   verovio: VerovioToolkit;
   tone: typeof Tone;
   midi: typeof Midi;
+  m21j: typeof music21;
   library: Record<string, Library>;
 };
 

@@ -55,7 +55,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^15.3.6",
     "@tonejs/midi": "^2.0.28",
+    "music21j": "^0.23.1",
     "typescript": "^6.0.3"
   }
 }
