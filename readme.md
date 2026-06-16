@@ -1,9 +1,11 @@
 # Josephus
 
-> [!IMPORTANT]  
+> [!TIP]  
 > **Te, venerande Magiter, accedo, Musicae Praeceptis, ac Institutis imbuendus.**
 >
 > *I come to you, venerable master, in order to be introduced to the rules and principles of music.*
+>
+> -- Josephus seeking master Aloysius tutoring in counterpoint. J. Fux, *Gradus ad Parnassum*
 
 ![Josephus](./assets/crowning.jpg)
 
