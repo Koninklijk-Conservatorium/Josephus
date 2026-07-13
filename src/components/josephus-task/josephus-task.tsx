@@ -1,4 +1,4 @@
-import { Component, h, State, Method, Event, EventEmitter } from '@stencil/core';
+import { Component, h, State, Event, EventEmitter, Prop } from '@stencil/core';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 import { Score } from '../../utils/Score';
 import { MEIDocument } from '../../utils/mei';
@@ -11,38 +11,37 @@ export type JosephusTaskLoadingState = 'loading' | 'loaded';
   shadow: true,
 })
 export class JosephusTask extends VerovioComponent {
+  @Prop() count: number = 0;
+  @Prop() spec: TaskSpec | undefined;
   @State() scores: MEIDocument[];
-  @State() spec: TaskSpec | undefined;
 
   private DO_NOT_RENDER = false;
 
   @Event({ eventName: 'josephus-task-loading' })
   taskLoading: EventEmitter<{ state: JosephusTaskLoadingState }>;
 
-  @Method()
-  async load(spec: TaskSpec) {
-    if (!(this.verovio && spec)) return;
+  async componentWillRender() {
+    if (!(this.verovio && this.spec)) return;
     // const scoresTXT = spec.scores.map(scoreSpec => {
     // This function should handle various data retrieval methods (files, music21j etc).
     const scores: MEIDocument[] = [];
-    for await (let scoreSpec of spec.scores) {
+    for await (let scoreSpec of this.spec.scores) {
+      // if (scoreSpec.source === '') {
+      //   const doc = new MEIDocument.fromTemplate(scoreSpec);
+      //   scores.push(doc);
+      //   continue;
+      // }
       const source = new Score(scoreSpec);
-      const score = await source.retrieve();
+      const score: string = await source.retrieve();
+      /* Convert to MEI. */
       this.loadData(score);
-      const mei = this.getMEI();
+      const mei: string = this.getMEI();
+      /* Load doc. */
       const doc = MEIDocument.parse(mei);
       scores.push(doc);
     }
-    this.spec ??= spec;
     this.scores = scores;
   }
-
-  async componentWillRender() {
-    if (!(this.verovio && this.spec)) return;
-    await this.load(this.spec);
-  }
-
-  // componentDidRender() {}
 
   componentDidLoad() {
     super.componentDidLoad();
@@ -75,11 +74,9 @@ export class JosephusTask extends VerovioComponent {
      * All scores in the field.
      */
     const scores = field.scoreRefs.map(i => {
-      const score: MEIDocument = this.scores[i];
-      const extraction = field.extractor ? score[field.extractor] : score.clone();
-      field.filter.forEach(f => {
-        extraction[`${f}Filter`]();
-      });
+      const score: MEIDocument = this.scores[i].clone();
+      const extraction = field.extractor ? score[field.extractor] : score; // HERE IS ISSUE
+      field.filter.forEach(f => extraction[`${f}Filter`]());
       return extraction.toString();
     });
 
