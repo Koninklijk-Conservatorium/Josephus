@@ -14,9 +14,21 @@ export class JosephusField extends VerovioComponent {
   @Prop() spec: FieldSpec | undefined
   @Prop() scores: StringMEI[][] = [] // TO DO: MEI String!
 
-
   componentDidLoad() {
     super.componentDidLoad();
+  }
+
+  transformScores(field: FieldSpec): StringMEI[] {
+    return field.scoreRefs.map(i => {
+      const score: StringMEI = this.scores[i][0]; // [0] for now.
+      this.loadData(score)
+      // this.verovio!.select()
+      const mei = this.getMEI() // does it work with 'select'?
+      const doc = MEIDocument.parse(mei)
+      const extraction = field.extractor ? doc[field.extractor] : doc; // HERE IS ISSUE
+      field.filter.forEach(f => extraction[`${f}Filter`]());
+      return extraction.toString();
+    });
   }
 
   handleDisplay(field: FieldSpec, scores: string[]) {
@@ -46,17 +58,7 @@ export class JosephusField extends VerovioComponent {
     /**
      * All scores in the field.
      */
-    const scores = field.scoreRefs.map(i => {
-      const score: StringMEI = this.scores[i][0]; // [0] for now.
-      // Here apply XSLT filters.
-      this.loadData(score)
-      // this.verovio!.select()
-      const mei = this.getMEI() // does it work with 'select'?
-      const doc = MEIDocument.parse(mei)
-      const extraction = field.extractor ? doc[field.extractor] : doc; // HERE IS ISSUE
-      field.filter.forEach(f => extraction[`${f}Filter`]());
-      return extraction.toString();
-    });
+    const scores = this.transformScores(field)
 
     switch (field.gui) {
       case 'display':
