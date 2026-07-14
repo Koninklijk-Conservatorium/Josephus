@@ -1,3 +1,8 @@
+type StringMEI = string & { lib?: 'MEI' }
+
+type SelectionMEI = string & { lib?: "MusicNotationAdressabilityAPI" }
+
+
 interface MEINoteElement extends Element {
   tagName: 'note';
 }
