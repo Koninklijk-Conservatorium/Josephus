@@ -33,8 +33,9 @@ function makeSchemaPerExported(path: string) {
 
   for (let t of symbol.exports.keys()) {
     const typeName: string = t as string;
+    console.log(typeName)
     if (!typeName.endsWith('Schema')) {
-      return;
+      continue;
     }
     const snakeName = pascalToSnake(typeName).replace(/-schema$/, '');
     // TO DO: error handling.
