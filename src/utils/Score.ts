@@ -39,7 +39,7 @@ export class Score {
   private async randFileName() {
     switch (this.lib.type) {
       case 'dir':
-        return this.randFileNameFromDir();
+        return await this.randFileNameFromDir();
       case 'file':
         return this.randElement(this.lib.filesSelected);
       default:
