@@ -6,6 +6,10 @@ import { MEIPitchExtractor } from './mei-extractors';
 
 */
 
+type ScoreExtractor = "pitches" | "segments"
+type ScoreFeature = "accidentals" | "articulations" | "pitches" | "durations"
+
+
 type MEIScoreExtractors = {
   readonly [E in ScoreExtractor]: MEIDocument;
 };
