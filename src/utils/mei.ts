@@ -1,5 +1,11 @@
 import { MEIPitchExtractor } from './mei-extractors';
 
+/*
+  TO DO:
+  – turn all createElement to createElementNS
+
+*/
+
 type MEIScoreExtractors = {
   readonly [E in ScoreExtractor]: MEIDocument;
 };
@@ -23,7 +29,8 @@ export class MEIDocument extends Document implements MEIScoreExtractors, MEIScor
     return MEIDocument.namespace[prefix] ?? null;
   }
 
-  private static snippet = this.parse(`
+  // TO DO: Turn to public (?) factory and merge with createSnippet
+  private static snippet = `
     <mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1">
       <meiHead>
         <fileDesc>
@@ -62,13 +69,18 @@ export class MEIDocument extends Document implements MEIScoreExtractors, MEIScor
         </body>
       </music>
     </mei>
-  `);
+  `;
 
   public static parse(mei: string): MEIDocument {
     const doc: Document = MEIDocument.parser.parseFromString(mei, 'text/xml');
     Object.setPrototypeOf(doc, MEIDocument.prototype);
     return doc as MEIDocument;
   }
+
+  // public static fromTemplate(template: TemplateSpec) {
+  //   const snippet = MEIDocument.snippet.clone();
+  //   return snippet;
+  // }
 
   private find(xpath: string) {
     return this.evaluate(xpath, this, MEIDocument.nsResolver, XPathResult.ANY_TYPE);
@@ -104,7 +116,7 @@ export class MEIDocument extends Document implements MEIScoreExtractors, MEIScor
   // }
 
   private createSnippet(content: Element[]): MEIDocument {
-    const doc = MEIDocument.snippet.clone();
+    const doc = MEIDocument.parse(MEIDocument.snippet);
 
     const [upper, lower] = doc.list('//mei:staff/mei:layer');
 
@@ -152,7 +164,44 @@ export class MEIDocument extends Document implements MEIScoreExtractors, MEIScor
   }
 
   get chordsWithFermata(): MEIDocument {
-    return this;
+    const verovio = window.josephus.verovio; // BAD AS HELL!!!
+    const score = MEIDocument.serializer.serializeToString(this);
+    verovio.loadData(score);
+
+    const fermataTimes = new Set<number>();
+    const fermatas = this.find('//mei:fermata');
+    this.iter(fermatas, fermata => {
+      const noteId = fermata.getAttribute('startid') ?? '';
+      if (!noteId) return;
+      const time = verovio.getTimesForElement(noteId.slice(1));
+      const scoreTimeOffset = time.scoreTimeOffset;
+      // fermataTimes.add(time.tstampOn[0]);
+      fermataTimes.add(scoreTimeOffset);
+    });
+
+    const chords: MEINoteElement[][] = [];
+    for (let tstamp of fermataTimes) {
+      const els = verovio?.getElementsAtTime(tstamp);
+      const chord: MEINoteElement[] = [];
+      for (let noteId of els.notes) {
+        const notes = this.find(`//mei:note[@xml:id='${noteId}']`);
+        this.iter(notes, note => chord.push(note as MEINoteElement));
+      }
+      chords.push(chord);
+    }
+
+    const snippet = this.createSnippet(
+      chords.map(chord => {
+        const chordMEI = this.createElement('chord') as Element;
+        chordMEI.setAttribute('stem.len', '0');
+        chord.forEach((note: MEINoteElement) => chordMEI.appendChild(note));
+        return chordMEI;
+      }),
+    );
+
+    console.log(chords);
+
+    return snippet;
   }
 
   /*
@@ -183,7 +232,6 @@ export class MEIDocument extends Document implements MEIScoreExtractors, MEIScor
   // And: slurs, dynamic sings etc...
 
   public durationsFilter(): void {
-    console.warn('Durations filter: not implemented.');
     /* Remove dots, but leave their effect. */
     this.list('//*[@dots]').forEach(tag => {
       const dots = tag.getAttribute('dots') ?? 0;

@@ -16,6 +16,7 @@ export class MEIPitchExtractor extends MEIExtractor {
     return `${oct} ${MEIPitchExtractor.pitchNames.indexOf(pname!)} ${accid}`;
   }
   private decodePitch(pcode: string): MEINoteElement {
+    // TO DO: move elsewhere.
     /* Create 'note' as container for data */
     const note = document.createElement('note') as MEINoteElement;
     note.setAttribute('dur', '4');
@@ -41,3 +42,7 @@ export class MEIPitchExtractor extends MEIExtractor {
     return notes.map(this.encodePitch).map(this.decodePitch);
   }
 }
+
+// type MEIElementWithFermata = MEINoteElement
+// export class MEIChordsWithFermataExtractor extends MEIExtractor {
+// }
