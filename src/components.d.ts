@@ -6,9 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
-import { MEIDocument } from "./utils/mei";
 export { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
-export { MEIDocument } from "./utils/mei";
 export namespace Components {
     interface JosephusAudio {
         "midi": string;
@@ -16,10 +14,17 @@ export namespace Components {
     interface JosephusBaseComponent {
     }
     interface JosephusChallenge {
-        "load": (spec: ChallengeSpec) => Promise<void>;
+        "spec": ChallengeSpec | undefined;
     }
     interface JosephusExam {
-        "href": string;
+        "href"?: string;
+    }
+    interface JosephusField {
+        /**
+          * @default []
+         */
+        "scores": StringMEI[][];
+        "spec": FieldSpec | undefined;
     }
     interface JosephusSnippet {
         "data": string | null;
@@ -30,7 +35,11 @@ export namespace Components {
         "repr": ScoreRepr[];
     }
     interface JosephusTask {
-        "load": (spec: TaskSpec) => Promise<void>;
+        /**
+          * @default 0
+         */
+        "count": number;
+        "spec": TaskSpec | undefined;
     }
     interface JosephusTimer {
         /**
@@ -110,6 +119,12 @@ declare global {
         prototype: HTMLJosephusExamElement;
         new (): HTMLJosephusExamElement;
     };
+    interface HTMLJosephusFieldElement extends Components.JosephusField, HTMLStencilElement {
+    }
+    var HTMLJosephusFieldElement: {
+        prototype: HTMLJosephusFieldElement;
+        new (): HTMLJosephusFieldElement;
+    };
     interface HTMLJosephusSnippetElement extends Components.JosephusSnippet, HTMLStencilElement {
     }
     var HTMLJosephusSnippetElement: {
@@ -156,6 +171,7 @@ declare global {
         "josephus-base-component": HTMLJosephusBaseComponentElement;
         "josephus-challenge": HTMLJosephusChallengeElement;
         "josephus-exam": HTMLJosephusExamElement;
+        "josephus-field": HTMLJosephusFieldElement;
         "josephus-snippet": HTMLJosephusSnippetElement;
         "josephus-task": HTMLJosephusTaskElement;
         "josephus-timer": HTMLJosephusTimerElement;
@@ -168,9 +184,17 @@ declare namespace LocalJSX {
     interface JosephusBaseComponent {
     }
     interface JosephusChallenge {
+        "spec"?: ChallengeSpec | undefined;
     }
     interface JosephusExam {
         "href"?: string;
+    }
+    interface JosephusField {
+        /**
+          * @default []
+         */
+        "scores"?: StringMEI[][];
+        "spec"?: FieldSpec | undefined;
     }
     interface JosephusSnippet {
         "data"?: string | null;
@@ -181,7 +205,12 @@ declare namespace LocalJSX {
         "repr"?: ScoreRepr[];
     }
     interface JosephusTask {
+        /**
+          * @default 0
+         */
+        "count"?: number;
         "onJosephus-task-loading"?: (event: JosephusTaskCustomEvent<{ state: JosephusTaskLoadingState }>) => void;
+        "spec"?: TaskSpec | undefined;
     }
     interface JosephusTimer {
         /**
@@ -240,6 +269,9 @@ declare namespace LocalJSX {
         "href": string | null;
         "data": string | null;
     }
+    interface JosephusTaskAttributes {
+        "count": number;
+    }
     interface JosephusTimerAttributes {
         "debug": boolean;
         "secs": number;
@@ -258,8 +290,9 @@ declare namespace LocalJSX {
         "josephus-base-component": JosephusBaseComponent;
         "josephus-challenge": JosephusChallenge;
         "josephus-exam": Omit<JosephusExam, keyof JosephusExamAttributes> & { [K in keyof JosephusExam & keyof JosephusExamAttributes]?: JosephusExam[K] } & { [K in keyof JosephusExam & keyof JosephusExamAttributes as `attr:${K}`]?: JosephusExamAttributes[K] } & { [K in keyof JosephusExam & keyof JosephusExamAttributes as `prop:${K}`]?: JosephusExam[K] };
+        "josephus-field": JosephusField;
         "josephus-snippet": Omit<JosephusSnippet, keyof JosephusSnippetAttributes> & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes]?: JosephusSnippet[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `attr:${K}`]?: JosephusSnippetAttributes[K] } & { [K in keyof JosephusSnippet & keyof JosephusSnippetAttributes as `prop:${K}`]?: JosephusSnippet[K] };
-        "josephus-task": JosephusTask;
+        "josephus-task": Omit<JosephusTask, keyof JosephusTaskAttributes> & { [K in keyof JosephusTask & keyof JosephusTaskAttributes]?: JosephusTask[K] } & { [K in keyof JosephusTask & keyof JosephusTaskAttributes as `attr:${K}`]?: JosephusTaskAttributes[K] } & { [K in keyof JosephusTask & keyof JosephusTaskAttributes as `prop:${K}`]?: JosephusTask[K] };
         "josephus-timer": Omit<JosephusTimer, keyof JosephusTimerAttributes> & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes]?: JosephusTimer[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `attr:${K}`]?: JosephusTimerAttributes[K] } & { [K in keyof JosephusTimer & keyof JosephusTimerAttributes as `prop:${K}`]?: JosephusTimer[K] };
     }
 }
@@ -271,6 +304,7 @@ declare module "@stencil/core" {
             "josephus-base-component": LocalJSX.IntrinsicElements["josephus-base-component"] & JSXBase.HTMLAttributes<HTMLJosephusBaseComponentElement>;
             "josephus-challenge": LocalJSX.IntrinsicElements["josephus-challenge"] & JSXBase.HTMLAttributes<HTMLJosephusChallengeElement>;
             "josephus-exam": LocalJSX.IntrinsicElements["josephus-exam"] & JSXBase.HTMLAttributes<HTMLJosephusExamElement>;
+            "josephus-field": LocalJSX.IntrinsicElements["josephus-field"] & JSXBase.HTMLAttributes<HTMLJosephusFieldElement>;
             "josephus-snippet": LocalJSX.IntrinsicElements["josephus-snippet"] & JSXBase.HTMLAttributes<HTMLJosephusSnippetElement>;
             "josephus-task": LocalJSX.IntrinsicElements["josephus-task"] & JSXBase.HTMLAttributes<HTMLJosephusTaskElement>;
             "josephus-timer": LocalJSX.IntrinsicElements["josephus-timer"] & JSXBase.HTMLAttributes<HTMLJosephusTimerElement>;
