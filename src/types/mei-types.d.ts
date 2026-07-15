@@ -1,8 +1,12 @@
-type StringMEI = string & { lib?: 'MEI' }
+type MEI = { lib?: 'MEI' }
+type AdressabilityAPI = { lib?: "MusicNotationAdressabilityAPI" }
 
-type SelectionMEI = string & { lib?: "MusicNotationAdressabilityAPI" }
 
-type MEIDocument = XMLDocument
+type StringMEI = string & MEI
+type MEIDocument = XMLDocument & MEI
+
+type SelectionMEI = string & AdressabilityAPI
+
 
 
 interface MEINoteElement extends Element {
