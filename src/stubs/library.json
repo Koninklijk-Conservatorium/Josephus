@@ -13,7 +13,7 @@
         "fileContent": ""
       }
     },
-    "chorales-bach": {
+    "chorales-bach-github": {
       "type": "dir",
       "path": "https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData",
       "fileNamePattern": "Chorales_Bach_\\d\\d\\d\\.krn",
@@ -21,6 +21,17 @@
         "type": "json",
         "fileNameInDir": "name",
         "fileContent": "content"
+      }
+    },
+    "chorales-bach": {
+      "type": "dir",
+      "path": "https://cappellaboanerges.nl/josephus-library/Flexible_harmonic_chorale_annotations/kernData",
+      "fileNamePattern": "",
+      "filesSelected": ["Chorales_Bach_001.krn"],
+      "resp": {
+        "type": "text",
+        "fileNameInDir": "",
+        "fileContent": ""
       }
     }
   }
