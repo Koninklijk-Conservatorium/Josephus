@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Koninklijk-Conservatorium/Josephus/refs/heads/main/schemas/josephus-exam.schema.json",
+  "$schema": "../../schemas/josephus-exam.schema.json",
   "challenges": [
     {
       "tasks": [
@@ -7,15 +7,30 @@
           "scores": [
             {
               "source": "schubert",
-              "entity": "score"
+              "entity": "score",
+              "transforms": []
+            },
+            {
+              "source": "schubert",
+              "entity": "score",
+              "transforms": [{
+                "type": "segmenter",
+                "feature": "pitches"
+              }]
             }
           ],
           "fields": [
             {
               "type": "legend",
               "scoreRefs": [0],
-              "extractor": null,
-              "filter": [],
+              "transforms": [
+                {
+                  "type": "extractor",
+                  "feature": "pitches",
+                  "unique": true,
+                  "order": ""
+                }
+              ],
               "repr": ["audio", "score"],
               "gui": "display",
               "items": 1,
@@ -24,8 +39,7 @@
             {
               "type": "question",
               "scoreRefs": [0],
-              "extractor": null,
-              "filter": ["pitches", "accidentals"],
+              "transforms": [],
               "repr": ["audio", "score"],
               "gui": "display",
               "items": 1,
@@ -33,9 +47,17 @@
             },
             {
               "type": "answer",
-              "scoreRefs": [0, 0],
-              "extractor": "pitches",
-              "filter": ["durations"],
+              "scoreRefs": [0, 1],
+              "transforms": [
+                {
+                  "type": "filter",
+                  "feature": "accidentals"
+                },
+                {
+                  "type": "filter",
+                  "feature": "pitches"
+                }
+              ],
               "repr": ["score"],
               "gui": "quiz",
               "items": 2,
