@@ -23,7 +23,6 @@ describe('MEITemplate', () => {
         pname: 'f',
       },
     });
-    console.log(chord);
     expect(chord).toEqual(`
     <chord>
      <note1 oct="4" pname="a"/>
