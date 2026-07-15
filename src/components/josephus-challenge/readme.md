@@ -5,23 +5,11 @@
 <!-- Auto Generated Below -->
 
 
-## Methods
+## Properties
 
-### `load(spec: ChallengeSpec) => Promise<void>`
-
-
-
-#### Parameters
-
-| Name   | Type                     | Description |
-| ------ | ------------------------ | ----------- |
-| `spec` | `{ tasks: TaskSpec[]; }` |             |
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Property | Attribute | Description | Type                     | Default     |
+| -------- | --------- | ----------- | ------------------------ | ----------- |
+| `spec`   | --        |             | `{ tasks: TaskSpec[]; }` | `undefined` |
 
 
 ## Dependencies
@@ -40,7 +28,8 @@ Type: `Promise<void>`
 graph TD;
   josephus-challenge --> josephus-timer
   josephus-challenge --> josephus-task
-  josephus-task --> josephus-snippet
+  josephus-task --> josephus-field
+  josephus-field --> josephus-snippet
   josephus-snippet --> josephus-audio
   josephus-exam --> josephus-challenge
   style josephus-challenge fill:#f9f,stroke:#333,stroke-width:4px

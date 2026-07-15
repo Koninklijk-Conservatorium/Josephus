@@ -7,18 +7,19 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type          | Default                       |
-| -------- | --------- | ----------- | ------------- | ----------------------------- |
-| `data`   | `data`    |             | `string`      | `undefined`                   |
-| `href`   | `href`    |             | `string`      | `undefined`                   |
-| `repr`   | --        |             | `ScoreRepr[]` | `['label', 'audio', 'score']` |
+| Property       | Attribute | Description | Type             | Default                                                                                                                                           |
+| -------------- | --------- | ----------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`         | `data`    |             | `string`         | `null`                                                                                                                                            |
+| `href`         | `href`    |             | `string`         | `null`                                                                                                                                            |
+| `repr`         | --        |             | `ScoreRepr[]`    | `['label', 'audio', 'score']`                                                                                                                     |
+| `scoreOptions` | --        |             | `VerovioOptions` | `{     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',   }` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [josephus-task](../josephus-task)
+ - [josephus-field](../josephus-field)
 
 ### Depends on
 
@@ -28,7 +29,7 @@
 ```mermaid
 graph TD;
   josephus-snippet --> josephus-audio
-  josephus-task --> josephus-snippet
+  josephus-field --> josephus-snippet
   style josephus-snippet fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

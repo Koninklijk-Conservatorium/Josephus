@@ -24,7 +24,8 @@ graph TD;
   josephus-exam --> josephus-challenge
   josephus-challenge --> josephus-timer
   josephus-challenge --> josephus-task
-  josephus-task --> josephus-snippet
+  josephus-task --> josephus-field
+  josephus-field --> josephus-snippet
   josephus-snippet --> josephus-audio
   style josephus-exam fill:#f9f,stroke:#333,stroke-width:4px
 ```

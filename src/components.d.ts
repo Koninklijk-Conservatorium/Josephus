@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { VerovioOptions } from "verovio";
 import { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
+export { VerovioOptions } from "verovio";
 export { JosephusTaskLoadingState } from "./components/josephus-task/josephus-task";
 export namespace Components {
     interface JosephusAudio {
@@ -27,12 +29,22 @@ export namespace Components {
         "spec": FieldSpec | undefined;
     }
     interface JosephusSnippet {
+        /**
+          * @default null
+         */
         "data": string | null;
+        /**
+          * @default null
+         */
         "href": string | null;
         /**
           * @default ['label', 'audio', 'score']
          */
         "repr": ScoreRepr[];
+        /**
+          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',   }
+         */
+        "scoreOptions": VerovioOptions;
     }
     interface JosephusTask {
         /**
@@ -197,12 +209,22 @@ declare namespace LocalJSX {
         "spec"?: FieldSpec | undefined;
     }
     interface JosephusSnippet {
+        /**
+          * @default null
+         */
         "data"?: string | null;
+        /**
+          * @default null
+         */
         "href"?: string | null;
         /**
           * @default ['label', 'audio', 'score']
          */
         "repr"?: ScoreRepr[];
+        /**
+          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',   }
+         */
+        "scoreOptions"?: VerovioOptions;
     }
     interface JosephusTask {
         /**
