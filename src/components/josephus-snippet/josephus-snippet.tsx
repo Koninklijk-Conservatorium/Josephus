@@ -1,4 +1,4 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, type JSX } from '@stencil/core';
 import type { VerovioOptions } from 'verovio';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 
@@ -10,7 +10,11 @@ type ScoreSVG = string;
   shadow: true,
 })
 export class JosephusSnippet extends VerovioComponent {
-  private layout: VerovioOptions = {
+
+  @Prop() href: string | null = null;
+  @Prop({ mutable: true }) data: string | null = null;
+  @Prop() repr: ScoreRepr[] = ['label', 'audio', 'score'];
+  @Prop() scoreOptions: VerovioOptions = {
     adjustPageHeight: true,
     adjustPageWidth: true,
     scale: 30,
@@ -19,35 +23,38 @@ export class JosephusSnippet extends VerovioComponent {
     header: 'none',
   };
 
-  @Prop() href: string | null;
-  @Prop({ mutable: true }) data: string | null;
-  @Prop() repr: ScoreRepr[] = ['label', 'audio', 'score'];
-
   get score() {
-    // SVG needs to be attached directly to innerHTML.
+    if (!this.verovio) return this.warnVerovioNotLoaded(<div>Verovio not loaded.</div>)
     const score: ScoreSVG | undefined = this.verovio.renderToSVG();
     if (!score) return <div>josephus-snippet: No score provided.</div>;
+    /*
+      The only way to make it work is to
+      attach the SVG directly to innerHTML.
+    */
     return <div innerHTML={this.verovio.renderToSVG()}></div>;
   }
 
-  get label() {
+  get label(): JSX.Element {
     return <div>Dummy label.</div>;
   }
 
-  get audio() {
+  get audio(): JSX.Element {
+    if (!this.verovio) return this.warnVerovioNotLoaded(<div>Verovio not loaded.</div>)
     const midiTxt = this.verovio.renderToMIDI();
     return <josephus-audio midi={midiTxt}></josephus-audio>;
   }
 
-  async componentWillRender() {
-    this.data ??= await fetch(this.href)
+  async componentWillRender(): Promise<void> {
+    if (!this.verovio) return this.warnVerovioNotLoaded(undefined)
+    if (!(this.data || this.href)) return
+    this.data ??= await fetch(this.href!)
       .then(resp => resp.text())
       .then(scoreTXT => scoreTXT);
-    this.loadData(this.data, this.layout);
+    if (!this.data) return console.warn('Cannot load data for snippet: ', this.data)
+    this.loadData(this.data, this.scoreOptions);
   }
 
   render() {
-    // return this.repr.map(repr => <div ref={$div => (this[`$${repr}`] = $div)}></div>);
     return this.repr.map(repr => {
       switch (repr) {
         case 'score':
@@ -56,6 +63,8 @@ export class JosephusSnippet extends VerovioComponent {
           return this.audio;
         case 'label':
           return this.label;
+        default:
+          repr satisfies never
       }
     });
   }

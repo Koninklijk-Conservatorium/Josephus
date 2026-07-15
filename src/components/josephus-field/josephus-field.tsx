@@ -1,70 +1,72 @@
 import { Component, Prop, h } from '@stencil/core';
-import { MEIDocument } from '../../utils/mei';
-import { VerovioComponent } from '../../utils/VerovioComponent';
+import { MEIParser } from '../../utils/MEIParser';
 
 @Component({
   tag: 'josephus-field',
   styleUrl: 'josephus-field.css',
   shadow: true,
 })
-export class JosephusField extends VerovioComponent {
+export class JosephusField {
 
   private DO_NOT_RENDER = false;
 
   @Prop() spec: FieldSpec | undefined
   @Prop() scores: StringMEI[][] = [] // TO DO: MEI String!
 
-  componentDidLoad() {
-    super.componentDidLoad();
-  }
-
-  transformScores(field: FieldSpec): StringMEI[] {
-    return field.scoreRefs.map(i => {
+  /**
+   * Turn all the received scores into
+   *
+   * THIS CANNOT EVER BE ASYNC!
+   * I use only one Verovio toolkit instance for the whole app...
+   */
+  componentWillRender() {
+    if (!this.spec) return
+    this.scores = this.spec.scoreRefs.map(i => {
+      // TO DO: score vs score[]
       const score: StringMEI = this.scores[i][0]; // [0] for now.
-      this.loadData(score)
+      const doc = new MEIParser(this.spec!.transforms).parseFromString(score)
+      const scoreTransformed = new XMLSerializer().serializeToString(doc)
       // this.verovio!.select()
-      const mei = this.getMEI() // does it work with 'select'?
-      const doc = MEIDocument.parse(mei)
-      const extraction = field.extractor ? doc[field.extractor] : doc; // HERE IS ISSUE
-      field.filter.forEach(f => extraction[`${f}Filter`]());
-      return extraction.toString();
+      // const mei = this.getMEI() // does it work with 'select'?
+      // const doc = MEIDocument.parse(mei)
+      // const extraction = field.extractor ? doc[field.extractor] : doc; // HERE IS ISSUE
+      // field.filter.forEach(f => extraction[`${f}Filter`]());
+      // return
+      return [scoreTransformed as StringMEI]
     });
   }
 
-  handleDisplay(field: FieldSpec, scores: string[]) {
-    return scores.map(score => <josephus-snippet data={score} repr={field.repr}></josephus-snippet>);
+  handleDisplay() {
+    return this.scores.map(score => <josephus-snippet data={score[0]} repr={this.spec!.repr}></josephus-snippet>);
   }
 
-  handleQuizField(value: number | string, field: FieldSpec, scores: string[]) {
+  handleQuizField(value: number | string) {
     return (
       <div>
         <input type="radio" name="dummy" value={value} id={`josephus-quiz-choice-${value}`} />
         <label htmlFor={`josephus-quiz-choice-${value}`}>
-          {scores.map(score => (
-            <josephus-snippet data={score} repr={field.repr} />
+          {this.scores.map(score => (
+            <josephus-snippet data={score[0]} repr={this.spec!.repr} />
           ))}
         </label>
       </div>
     );
   }
 
-  handleQuiz(field: FieldSpec, scores: string[]) {
-    return Array.from({ length: field.items }, (_, i) => i).map(i => this.handleQuizField(i, field, scores));
+  handleQuiz() {
+    return Array.from({ length: this.spec!.items }, (_, i) => i).map(i => this.handleQuizField(i));
   }
 
 
-  handle(field: FieldSpec) {
+  handle() {
     if (this.DO_NOT_RENDER) return <div>Rendering turned off.</div>;
-    /**
-     * All scores in the field.
-     */
-    const scores = this.transformScores(field)
+    if (!this.spec) return <div>Josephus Field: spec not provided.</div>
 
-    switch (field.gui) {
+    switch (this.spec.gui) {
       case 'display':
-        return this.handleDisplay(field, scores);
+        return this.handleDisplay();
       case 'quiz':
-        return this.handleQuiz(field, scores);
+        return this.handleQuiz();
       case 'connect':
         return <div>Connect GUI not implemented.</div>;
       case 'order':
@@ -73,10 +75,10 @@ export class JosephusField extends VerovioComponent {
         return <div>Selection GUI not implemented.</div>;
       default:
         console.warn('No GUI provided for task field.');
-        field.gui satisfies never;
+        this.spec.gui satisfies never;
     }
 
-    return <div>Cannot load field "{field.type}".</div>;
+    return <div>Cannot load field "{this.spec.type}".</div>;
   }
 
   render() {
@@ -86,7 +88,7 @@ export class JosephusField extends VerovioComponent {
         <div>{this.spec.type.toUpperCase()}</div>
         <div>{this.spec.description ?? 'No description.'}</div>
       </legend>
-      <div>{this.handle(this.spec)}</div>
+      <div>{this.handle()}</div>
     </fieldset>
   }
 }
