@@ -16,10 +16,10 @@
       window.m21conf = { loadSoundfont: false };
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/music21j/releases/music21j.css" />
-    <script src="https://cdn.jsdelivr.net/npm/music21j/releases/music21.debug.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/music21j/releases/music21.debug.js"></script>
     <script>
       music21.common.urls.soundfontUrl = 'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts/FluidR3_GM/';
-    </script>
+    </script>-->
     <!--<josephus-library></josephus-library>-->
     <script>
       document.addEventListener('DOMContentLoaded', event => {
@@ -32,7 +32,7 @@
         window.josephus.midi = Midi;
         document.dispatchEvent(new CustomEvent('josephus-tonemidi-initialized'));
 
-        window.josephus.m21j = music21;
+        // window.josephus.m21j = music21;
 
         fetch('stubs/library.json')
           // fetch('https://cappellaboanerges.nl/josephus-library/library.json')
@@ -43,7 +43,7 @@
           });
 
         verovio.module.onRuntimeInitialized = async () => {
-          window.josephus.verovio = new verovio.toolkit();
+          window.josephus.verovio = verovio //new verovio.toolkit();
           document.dispatchEvent(new CustomEvent('josephus-verovio-initialized'));
         };
       });

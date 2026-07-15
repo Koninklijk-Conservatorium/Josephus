@@ -6,20 +6,31 @@ import type { toolkit as VerovioToolkit, VerovioOptions } from 'verovio';
   shadow: true,
 })
 export abstract class VerovioComponent {
-  @State() verovio: VerovioToolkit | undefined = window.josephus.verovio;
+  @State() verovio: VerovioToolkit | undefined = this.createVerovio()
 
   @Listen('josephus-verovio-initialized', { target: 'document' })
-  verovioInitHandler(_event) {
-    this.verovio = window.josephus.verovio;
+  verovioInitHandler(_event: Event) {
+    this.verovio = this.createVerovio()
   }
 
-  loadData(data: string, options: VerovioOptions = {}) {
+  private createVerovio(): VerovioToolkit | undefined {
+    return window.josephus ? new window.josephus.verovio.toolkit() : undefined
+  }
+
+  protected warnVerovioNotLoaded<T extends any>(dummy:T): T {
+    console.log('Verovio not loaded.')
+    return dummy
+  }
+
+  loadData(data: string, options: VerovioOptions = {}): void {
+    if (!this.verovio) return this.warnVerovioNotLoaded(undefined)
     this.verovio.resetOptions();
     this.verovio.setOptions(options);
     this.verovio.loadData(data);
   }
 
-  getMEI() {
+  getMEI(): string {
+    if (!this.verovio) return this.warnVerovioNotLoaded('')
     return this.verovio.getMEI();
   }
 

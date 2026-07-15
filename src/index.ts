@@ -7,13 +7,13 @@
  * DO NOT use this file to export your components. Instead, use the recommended approaches
  * to consume components of this package as outlined in the `README.md`.
  */
-import type { VerovioModule, toolkit as VerovioToolkit } from 'verovio';
+import type * as verovio from 'verovio';
 import type * as Tone from 'tone';
 import type { Midi } from '@tonejs/midi';
 import type music21 from 'music21j';
 
 export type Josephus = {
-  verovio: VerovioToolkit;
+  verovio: typeof verovio;
   tone: typeof Tone;
   midi: typeof Midi;
   m21j: typeof music21;
@@ -22,7 +22,7 @@ export type Josephus = {
 
 declare global {
   interface Window {
-    verovio: { module: VerovioModule; toolkit: typeof VerovioToolkit };
+    // verovio: { module: VerovioModule; toolkit: typeof VerovioToolkit };
     josephus?: Josephus;
   }
 }
