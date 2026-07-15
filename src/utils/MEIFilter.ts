@@ -11,10 +11,10 @@ export class MEIAccidentalsFilter extends MEIFilter {
         tag.removeAttribute(attrName)
       )
     )
-    const tagsRedundant = ['accid'];
+    const tagsRedundant = ['accid', 'keySig'];
     tagsRedundant.forEach(tagName =>
       this.select(`//${tagName}`, mei).forEach(tag =>
-        tag.remove()
+        tag.parentNode?.removeChild(tag)
       )
     )
     return mei
