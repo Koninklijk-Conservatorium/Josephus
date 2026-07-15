@@ -5,8 +5,12 @@
  * (e.g. specifications for tasks, challenges, exams, libraries definitions etc).
  */
 
-export type JosephusExamSchema = ExamSpec & { $schema: string };
-export type JosephusChallengeSchema = ChallengeSpec & { $schema: string };
+// TO DO: Brand '$schema'.
+
+export type JosephusScoreSchema = ScoreSpec & { $schema: string };
+export type JosephusFieldeSchema = FieldSpec & { $schema: string };
 export type JosephusTaskSchema = TaskSpec & { $schema: string };
+export type JosephusChallengeSchema = ChallengeSpec & { $schema: string };
+export type JosephusExamSchema = ExamSpec & { $schema: string };
 
 export type JosephusLibrarySchema = JosephusLibrary & { $schema: string };

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Koninklijk-Conservatorium/Josephus/refs/heads/main/schemas/josephus-exam.schema.json",
+  "challenges": [
+    {
+      "tasks": [
+        {
+          "scores": [
+            {
+              "source": "schubert",
+              "entity": "score"
+            }
+          ],
+          "fields": [
+            {
+              "type": "legend",
+              "scoreRefs": [0],
+              "extractor": null,
+              "filter": [],
+              "repr": ["audio", "score"],
+              "gui": "display",
+              "items": 1,
+              "description": "Music21j example."
+            },
+            {
+              "type": "question",
+              "scoreRefs": [0],
+              "extractor": null,
+              "filter": ["pitches", "accidentals"],
+              "repr": ["audio", "score"],
+              "gui": "display",
+              "items": 1,
+              "description": "What is your answer?"
+            },
+            {
+              "type": "answer",
+              "scoreRefs": [0, 0],
+              "extractor": "pitches",
+              "filter": ["durations"],
+              "repr": ["score"],
+              "gui": "quiz",
+              "items": 2,
+              "description": "Pick an answer:"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -16,25 +16,26 @@ function makeSchemaPerExported(path: string) {
   const sf = program.getSourceFile(path);
 
   if (!sf) {
-    console.log('Cannot create schemas from file. No such file:', path);
+    console.warn('Cannot create schemas from file. No such file:', path);
     return;
   }
 
   const symbol = checker.getSymbolAtLocation(sf);
 
   if (!symbol?.exports) {
-    console.log('Cannot create schemas from file:', path);
+    console.warn('Cannot create schemas from file:', path);
     return;
   }
 
-  console.log('📚 Josephus: building JSON Schema files...');
+  console.warn('📚 Josephus: building JSON Schema files...');
 
   // TO DO: schema versioning.
 
   for (let t of symbol.exports.keys()) {
     const typeName: string = t as string;
+    console.log(typeName)
     if (!typeName.endsWith('Schema')) {
-      return;
+      continue;
     }
     const snakeName = pascalToSnake(typeName).replace(/-schema$/, '');
     // TO DO: error handling.
@@ -51,7 +52,7 @@ function makeSchemaPerExported(path: string) {
       { stdio: 'inherit' },
     );
   }
-  console.log('📚 Josephus: successfully generated schemas!');
+  console.warn('📚 Josephus: successfully generated schemas!');
 }
 
 makeSchemaPerExported('./src/types/josephus-schemas.d.ts');

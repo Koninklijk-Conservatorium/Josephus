@@ -1,4 +1,4 @@
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, Host, h, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'josephus-exam',
@@ -6,50 +6,35 @@ import { Component, h, Prop, State } from '@stencil/core';
   shadow: true,
 })
 export class JosephusExam {
-  private $challenge: any | undefined;
-
-  @Prop() href: string;
-
-  @State() spec: ExamSpec;
+  @Prop() href?: string;
+  @State() spec?: ExamSpec;
   @State() challenge: number | undefined = undefined;
 
-  private startChallenge(i: number) {
-    this.challenge = i;
-    // Component loads in challengeScreen().
-    // Challenge spec loads in componentDidLoad().
-  }
-
-  private endChallenge() {
-    this.challenge = undefined;
-    this.$challenge = undefined;
-  }
-
   private examScreen() {
-    this.$challenge;
-    return this.spec.challenges.map((_, i) => <button onClick={() => this.startChallenge(i)}>Challenge {i + 1}</button>);
+    return <Host>
+      {this.spec!.challenges.map((_, i) => (
+        <button onClick={() => this.challenge = i}>Challenge {i + 1}</button>
+      ))}
+    </Host>
   }
 
   private challengeScreen() {
     return (
-      <>
-        <josephus-challenge ref={$ => (this.$challenge = $)}></josephus-challenge>
-        <button onClick={() => this.endChallenge()}>Back to exam.</button>
-      </>
+      <Host>
+        <josephus-challenge
+          spec={this.spec!.challenges[this.challenge!]}
+        />
+        <button onClick={() => this.challenge = undefined}>Back to exam.</button>
+      </Host>
     );
   }
 
   async componentWillRender() {
-    this.spec = await fetch(this.href).then(r => r.json());
-  }
-
-  componentDidRender() {
-    if (this.$challenge) {
-      const spec: ChallengeSpec = this.spec.challenges[this.challenge];
-      this.$challenge?.load(spec);
-    }
+    if (!(this.spec || this.href)) return
+    this.spec ??= await fetch(this.href!).then(r => r.json());
   }
 
   render() {
-    return this.challenge === undefined ? this.examScreen() : this.challengeScreen();
+    return this.spec ? this.challenge === undefined ? this.examScreen() : this.challengeScreen() : <div>Josephus Exam not provided.</div>;
   }
 }

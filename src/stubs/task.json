@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schemas/josephus-task.schema.json",
+  "scores": [
+    {
+      "source": "schubert",
+      "entity": "score"
+    }
+  ],
+  "fields": [
+    {
+      "type": "question",
+      "scoreRefs": [0],
+      "extractor": null,
+      "filter": ["durations"],
+      "repr": ["score"],
+      "gui": "display",
+      "items": 1,
+      "description": "What is your answer?"
+    }
+  ]
+}

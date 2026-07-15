@@ -1,0 +1,19 @@
+<chord>
+  <note pname={pname1} oct={oct1} accid={accid1}/>
+  <note pname={pname2} oct={oct2} accid={accid2}/>
+  <note pname={pname3} oct={oct3} accid={accid3}/>
+</chord>
+
+Chord
+– root: Pitch
+– class: Augmented
+– inversion: 1
+– voicing: [0,2,1]
+
+(Pitch, Augmented) => [ p1, p2, p3 ]
+Inversion(1) => [ p2, p3, p1 ]
+Voicing([0,2,1]) => [ p2, p1, p3 ]
+
+Result: [ p2, p1, p3 ] => [ N1(p,o), N2(p,o), N3(p,o) ]
+
+N(p,o) => <note pname=p oct=o/>

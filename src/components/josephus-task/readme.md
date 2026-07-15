@@ -5,30 +5,19 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property | Attribute | Description | Type                                            | Default     |
+| -------- | --------- | ----------- | ----------------------------------------------- | ----------- |
+| `count`  | `count`   |             | `number`                                        | `0`         |
+| `spec`   | --        |             | `{ scores: ScoreSpec[]; fields: FieldSpec[]; }` | `undefined` |
+
+
 ## Events
 
 | Event                   | Description | Type                                                |
 | ----------------------- | ----------- | --------------------------------------------------- |
 | `josephus-task-loading` |             | `CustomEvent<{ state: JosephusTaskLoadingState; }>` |
-
-
-## Methods
-
-### `load(spec: TaskSpec) => Promise<void>`
-
-
-
-#### Parameters
-
-| Name   | Type                                            | Description |
-| ------ | ----------------------------------------------- | ----------- |
-| `spec` | `{ scores: ScoreSpec[]; fields: FieldSpec[]; }` |             |
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies
@@ -39,12 +28,13 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- [josephus-snippet](../josephus-snippet)
+- [josephus-field](../josephus-field)
 
 ### Graph
 ```mermaid
 graph TD;
-  josephus-task --> josephus-snippet
+  josephus-task --> josephus-field
+  josephus-field --> josephus-snippet
   josephus-snippet --> josephus-audio
   josephus-challenge --> josephus-task
   style josephus-task fill:#f9f,stroke:#333,stroke-width:4px

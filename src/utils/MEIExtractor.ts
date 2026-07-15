@@ -1,4 +1,6 @@
-class MEIExtractor {
+import { MEITransform } from "./MEITransform";
+
+abstract class MEIExtractor extends MEITransform {
   protected unique<E extends Element, Encoding extends any>(elems: E[], encode: (e: E) => Encoding, decode: (e: Encoding) => E, sorted: boolean): E[] {
     const unique = new Set<Encoding>();
     elems.map((e: E) => unique.add(encode(e)));
@@ -7,6 +9,18 @@ class MEIExtractor {
 }
 
 export class MEIPitchExtractor extends MEIExtractor {
+
+  transform(mei: MEIDocument): MEIDocument {
+    const notes = this.select('//mei:note', mei) as MEINoteElement[];
+    const uniquePitches = this.extractPitches(notes, true, true);
+    const snippet = this.createSnippet(uniquePitches);
+    // TO DO: make it simpler?
+    this.select("//mei:mei", mei).forEach(tag => {
+      tag.replaceWith(this.select("//mei:mei", snippet)[0])
+    })
+    return mei;
+  }
+
   private static pitchNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
 
   private encodePitch(note: MEINoteElement): string {
@@ -15,7 +29,9 @@ export class MEIPitchExtractor extends MEIExtractor {
     const oct = note.getAttribute('oct');
     return `${oct} ${MEIPitchExtractor.pitchNames.indexOf(pname!)} ${accid}`;
   }
+
   private decodePitch(pcode: string): MEINoteElement {
+    // TO DO: move elsewhere.
     /* Create 'note' as container for data */
     const note = document.createElement('note') as MEINoteElement;
     note.setAttribute('dur', '4');
@@ -31,13 +47,13 @@ export class MEIPitchExtractor extends MEIExtractor {
     return note;
   }
 
-  public pitches(notes: MEINoteElement[], unique: boolean, sorted: boolean): MEINoteElement[] {
+  private extractPitches(notes: MEINoteElement[], unique: boolean, sorted: boolean): MEINoteElement[] {
     if (unique) {
       return this.unique(notes, this.encodePitch, this.decodePitch, sorted);
     } else if (sorted) {
       return notes.map(this.encodePitch).sort().map(this.decodePitch);
     }
-
     return notes.map(this.encodePitch).map(this.decodePitch);
   }
+
 }

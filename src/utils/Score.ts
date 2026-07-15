@@ -39,7 +39,7 @@ export class Score {
   private async randFileName() {
     switch (this.lib.type) {
       case 'dir':
-        return this.randFileNameFromDir();
+        return await this.randFileNameFromDir();
       case 'file':
         return this.randElement(this.lib.filesSelected);
       default:
@@ -47,7 +47,7 @@ export class Score {
     }
   }
 
-  async retrieve() {
+  async retrieve(): Promise<string> {
     const resp = this.lib.resp;
     const fileName = this.spec.fileName ?? (await this.randFileName());
     const href = this.lib.path + '/' + fileName;
@@ -60,5 +60,7 @@ export class Score {
       default:
         resp.type satisfies never;
     }
+    console.warn('Unknown responce result:', result)
+    return ''
   }
 }
