@@ -18,7 +18,7 @@ export abstract class VerovioComponent {
   }
 
   protected warnVerovioNotLoaded<T extends any>(dummy:T): T {
-    console.log('Verovio not loaded.')
+    console.warn('Verovio not loaded.')
     return dummy
   }
 
