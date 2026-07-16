@@ -20,6 +20,7 @@ export namespace Components {
     }
     interface JosephusExam {
         "href"?: string;
+        "spec"?: ExamSpec;
     }
     interface JosephusField {
         /**
@@ -208,6 +209,7 @@ declare namespace LocalJSX {
     }
     interface JosephusExam {
         "href"?: string;
+        "spec"?: ExamSpec;
     }
     interface JosephusField {
         /**
