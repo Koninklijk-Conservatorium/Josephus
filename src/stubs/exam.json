@@ -29,7 +29,7 @@
               "gui": "display",
               "description": "Description of a question.",
               "items": "all",
-              "repr": ["score"],
+              "repr": ["audio"],
               "transforms": []
             },
             {
