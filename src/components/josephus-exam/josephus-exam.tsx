@@ -31,6 +31,7 @@ export class JosephusExam {
 
   async componentWillRender() {
     if (!(this.spec || this.href)) return
+    if (!this.href) this.spec === undefined
     this.spec ??= await fetch(this.href!).then(r => r.json());
   }
 
