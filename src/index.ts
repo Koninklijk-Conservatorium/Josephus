@@ -25,5 +25,8 @@ declare global {
   }
 }
 
+export { VerovioComponent } from "./utils/VerovioComponent"
+export { Score } from "./utils/Score"
+
 // export { format } from './utils/utils';
 // export * from './utils/library';
