@@ -55,7 +55,7 @@ export class MEIQuery {
     return MEIQuery.namespace[prefix] ?? null;
   }
 
-  select(xpath: string, mei: MEIDocument) {
+  select(xpath: string, mei: MEIDocument): Element[] {
     const evaluator = new XPathEvaluator();
     const expression = evaluator.createExpression(xpath, MEIQuery.nsResolver);
     const result = expression.evaluate(mei, XPathResult.ANY_TYPE)
