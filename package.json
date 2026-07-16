@@ -1,7 +1,7 @@
 {
   "name": "josephus",
-  "version": "0.0.4",
-  "description": "Stencil Component Starter",
+  "version": "0.0.5",
+  "description": "Web components for music theory testing developed at Koninklijk Conservatorium Den Haag.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -47,24 +47,18 @@
     "@types/node": "^25.9.3",
     "@types/verovio": "^5.1.0",
     "@vitest/browser-playwright": "^4.1.8",
-    "@xmldom/xmldom": "^0.9.10",
-    "libxmljs": "^1.0.11",
     "mustache": "^4.2.0",
     "playwright": "^1.60.0",
     "tone": "^15.1.22",
     "ts-json-schema-generator": "^2.9.0",
     "tsx": "^4.22.4",
-    "vitest": "^4.1.8",
-    "xml2js": "^0.6.2",
-    "xpath": "^0.0.34"
+    "vitest": "^4.1.8"
   },
   "license": "MIT",
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^15.3.6",
     "@tonejs/midi": "^2.0.28",
     "@types/mustache": "^4.2.6",
-    "music21j": "^0.23.1",
-    "typebox": "^1.2.14",
     "typescript": "^6.0.3"
   }
 }

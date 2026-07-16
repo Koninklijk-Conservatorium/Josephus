@@ -61,7 +61,6 @@ export class JosephusSnippet extends VerovioComponent {
     console.log(this.select.measureRange)
     this.verovio.select(this.select.measureRange)
     this.loadData(this.data, this.scoreOptions);
-    console.log(this.verovio.getMEI())
   }
 
   render() {
