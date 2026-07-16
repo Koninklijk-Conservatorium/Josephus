@@ -2,7 +2,7 @@ type ScoreSpec = {
   source: string; // keyof typeof libraries;
   fileName?: string;
   entity: 'score';
-  transforms: TransformSpec[]
+  // transforms: TransformSpec[]
 };
 
 type ScoreRepr = 'score' | 'audio' | 'label';
@@ -15,16 +15,15 @@ type FieldSpec = {
   /**
    * Reference to scores loaded by task.
    */
-  scoreRefs: number[];
+  scoreRefs: number[]; // of length AT LEAST 1!
   transforms: TransformSpec[]
   repr: ScoreRepr[];
   layout?: ScoreLayout;
   gui: JosephusGUI;
-  items: number;
+  items: number | "all";
   events?: string[];
   description: string;
 };
-
 
 type TaskSpec = {
   scores: ScoreSpec[]; // List of scores, referred in fields using "#score/index".
