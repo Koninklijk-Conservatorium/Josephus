@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State, Method } from '@stencil/core';
+import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'josephus-exam',
@@ -10,10 +10,17 @@ export class JosephusExam {
   @State() spec?: ExamSpec;
   @State() challenge: number | undefined = undefined;
 
-  @Method()
-  async reset() {
-    this.challenge = undefined
+  // @Method()
+  // async reset() {
+  //   this.challenge = undefined
+  //   this.spec = undefined
+  // }
+
+  @Watch('href')
+  reset() {
+    this.href = undefined
     this.spec = undefined
+    this.challenge = undefined
   }
 
   private examScreen() {
