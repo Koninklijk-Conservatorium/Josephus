@@ -6,17 +6,10 @@
         {
           "scores": [
             {
-              "source": "schubert",
+              "source": "swiss-folksongs",
               "entity": "score",
-              "transforms": []
-            },
-            {
-              "source": "schubert",
-              "entity": "score",
-              "transforms": [{
-                "type": "segmenter",
-                "feature": "pitches"
-              }]
+              "transforms": [],
+              "$comment": "use Segmenter!"
             }
           ],
           "fields": [
@@ -28,40 +21,54 @@
                   "type": "extractor",
                   "feature": "pitches",
                   "unique": true,
-                  "order": ""
+                  "order": "ascending"
                 }
               ],
-              "repr": ["audio", "score"],
+              "repr": ["score"],
               "gui": "display",
               "items": 1,
-              "description": "Music21j example."
+              "description": "Find this pitch..."
+            },
+            {
+              "type": "legend",
+              "scoreRefs": [0],
+              "transforms": [{
+                "type": "segmenter",
+                "feature": "brackets",
+                "$func": "phrase"
+              }],
+              "repr": ["score", "audio"],
+              "gui": "quiz",
+              "items": "all",
+              "description": "(Full score segmented)"
             },
             {
               "type": "question",
               "scoreRefs": [0],
               "transforms": [],
-              "repr": ["audio", "score"],
+              "repr": ["audio"],
               "gui": "display",
               "items": 1,
-              "description": "What is your answer?"
+              "description": "...in this melody!"
             },
             {
               "type": "answer",
-              "scoreRefs": [0, 1],
+              "scoreRefs": [0],
+              "$comment": "change to: extractor - durations.",
               "transforms": [
                 {
                   "type": "filter",
-                  "feature": "accidentals"
+                  "feature": "pitches"
                 },
                 {
                   "type": "filter",
-                  "feature": "pitches"
+                  "feature": "accidentals"
                 }
               ],
               "repr": ["score"],
-              "gui": "quiz",
-              "items": 2,
-              "description": "Pick an answer:"
+              "gui": "display",
+              "items": 1,
+              "description": "Click on the note you think it has the selected pitch."
             }
           ]
         }

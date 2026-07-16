@@ -58,7 +58,7 @@ export class JosephusChallenge {
   private startedScreen() {
     return (
       <>
-        <josephus-timer ref={$ => (this.$timer = $)} onJosephus-timer-progress={e => this.handleTimer(e)} />
+        <josephus-timer secs={240} ref={$ => (this.$timer = $)} onJosephus-timer-progress={e => this.handleTimer(e)} />
         <josephus-task spec={this.taskCurrent} count={this.taskCounter} onJosephus-task-loading={e => this.handleTaskLoading(e)} />
         <button onClick={() => this.nextTask()}>Next task</button>
         <button onClick={() => this.state = 'finished'}>Finish challenge</button>

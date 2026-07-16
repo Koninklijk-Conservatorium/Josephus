@@ -13,6 +13,15 @@
         "fileContent": ""
       }
     },
+    "swiss-folksongs": {
+      "type": "dir",
+      "path": "https://api.github.com/repos/ccarh/essen-folksong-collection/contents/europa/schweiz",
+      "resp": {
+        "type": "json",
+        "fileNameInDir": "name",
+        "fileContent": "content"
+      }
+    },
     "chorales-bach-github": {
       "type": "dir",
       "path": "https://api.github.com/repos/DDMAL/Flexible_harmonic_chorale_annotations/contents/kernData",

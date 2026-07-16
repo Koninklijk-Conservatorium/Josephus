@@ -4,64 +4,56 @@
     {
       "tasks": [
         {
+          "$library": "",
           "scores": [
             {
-              "source": "schubert",
+              "source": "swiss-folksongs",
               "entity": "score",
               "transforms": []
             },
             {
-              "source": "schubert",
+              "source": "swiss-folksongs",
               "entity": "score",
-              "transforms": [{
-                "type": "segmenter",
-                "feature": "pitches"
-              }]
+              "transforms": []
+            },
+            {
+              "source": "swiss-folksongs",
+              "entity": "score",
+              "transforms": []
             }
           ],
           "fields": [
             {
-              "type": "legend",
               "scoreRefs": [0],
-              "transforms": [
-                {
-                  "type": "extractor",
-                  "feature": "pitches",
-                  "unique": true,
-                  "order": ""
-                }
-              ],
-              "repr": ["audio", "score"],
-              "gui": "display",
-              "items": 1,
-              "description": "Music21j example."
-            },
-            {
               "type": "question",
-              "scoreRefs": [0],
-              "transforms": [],
-              "repr": ["audio", "score"],
               "gui": "display",
-              "items": 1,
-              "description": "What is your answer?"
+              "description": "Description of a question.",
+              "items": "all",
+              "repr": ["score"],
+              "transforms": []
             },
             {
+              "scoreRefs": [0],
               "type": "answer",
-              "scoreRefs": [0, 1],
+              "gui": "quiz",
+              "description": "Description of a question.",
+              "items": "all",
+              "repr": ["score"],
               "transforms": [
                 {
-                  "type": "filter",
-                  "feature": "accidentals"
-                },
-                {
-                  "type": "filter",
-                  "feature": "pitches"
+                  "type":"segmenter",
+                  "feature": "brackets"
                 }
-              ],
-              "repr": ["score"],
+              ]
+            },
+            {
+              "scoreRefs": [0, 1, 2],
+              "type": "answer",
               "gui": "quiz",
-              "items": 2,
-              "description": "Pick an answer:"
+              "description": "Description of a question.",
+              "items": "all",
+              "repr": ["score"],
+              "transforms": []
             }
           ]
         }

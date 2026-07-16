@@ -2,7 +2,7 @@ type ExtractorSpec = {
   type: "extractor"
   feature: 'pitches'
   unique: boolean,
-  order: string, // Change to: sort?: 'ascending | 'descending'
+  // order?: 'ascending' | 'descending'
 }
 
 type FilterSpec = {
@@ -12,7 +12,7 @@ type FilterSpec = {
 
 type SegmenterSpec = {
   type: "segmenter"
-  feature: never //'fermata' | 'rests' | 'pitches'
+  feature: "brackets" //'fermata' | 'rests' | 'pitches'
 }
 
 type SelectorSpec = {

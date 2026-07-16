@@ -25,7 +25,11 @@ export namespace Components {
         /**
           * @default []
          */
-        "scores": StringMEI[][];
+        "scores": ScoreData[];
+        /**
+          * @default []
+         */
+        "snippets": Snippet[];
         "spec": FieldSpec | undefined;
     }
     interface JosephusSnippet {
@@ -42,9 +46,13 @@ export namespace Components {
          */
         "repr": ScoreRepr[];
         /**
-          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',   }
+          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',     breaks: "none"   }
          */
         "scoreOptions": VerovioOptions;
+        /**
+          * @default { measureRange: { measureRange: 'start-end' } }
+         */
+        "select": SelectionMEI;
     }
     interface JosephusTask {
         /**
@@ -205,7 +213,11 @@ declare namespace LocalJSX {
         /**
           * @default []
          */
-        "scores"?: StringMEI[][];
+        "scores"?: ScoreData[];
+        /**
+          * @default []
+         */
+        "snippets"?: Snippet[];
         "spec"?: FieldSpec | undefined;
     }
     interface JosephusSnippet {
@@ -222,9 +234,13 @@ declare namespace LocalJSX {
          */
         "repr"?: ScoreRepr[];
         /**
-          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',   }
+          * @default {     adjustPageHeight: true,     adjustPageWidth: true,     scale: 30,     scaleToPageSize: false,     footer: 'none',     header: 'none',     breaks: "none"   }
          */
         "scoreOptions"?: VerovioOptions;
+        /**
+          * @default { measureRange: { measureRange: 'start-end' } }
+         */
+        "select"?: SelectionMEI;
     }
     interface JosephusTask {
         /**

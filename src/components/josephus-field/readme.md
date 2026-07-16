@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                                                                                                                                                                                       | Default     |
-| -------- | --------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `scores` | --        |             | `StringMEI[][]`                                                                                                                                                                            | `[]`        |
-| `spec`   | --        |             | `{ type: FieldType; scoreRefs: number[]; transforms: TransformSpec[]; repr: ScoreRepr[]; layout?: ScoreLayout; gui: JosephusGUI; items: number; events?: string[]; description: string; }` | `undefined` |
+| Property   | Attribute | Description | Type                                                                                                                                                                                                | Default     |
+| ---------- | --------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `scores`   | --        |             | `ScoreData[]`                                                                                                                                                                                       | `[]`        |
+| `snippets` | --        |             | `Snippet[]`                                                                                                                                                                                         | `[]`        |
+| `spec`     | --        |             | `{ type: FieldType; scoreRefs: number[]; transforms: TransformSpec[]; repr: ScoreRepr[]; layout?: ScoreLayout; gui: JosephusGUI; items: number \| "all"; events?: string[]; description: string; }` | `undefined` |
 
 
 ## Dependencies
