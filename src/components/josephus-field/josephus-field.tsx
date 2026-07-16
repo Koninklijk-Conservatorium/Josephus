@@ -30,7 +30,8 @@ export class JosephusField {
       data.mei = scoreTransformed
       data.segments = doc.selections
     });
-    this.snippets = this.getSnippets()
+    this.snippets.length = 0
+    this.getSnippets().forEach(snippet => this.snippets.push(snippet))
   }
 
   /**

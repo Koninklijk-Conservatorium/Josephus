@@ -39,12 +39,7 @@
               "description": "Description of a question.",
               "items": "all",
               "repr": ["score"],
-              "transforms": [
-                {
-                  "type":"segmenter",
-                  "feature": "brackets"
-                }
-              ]
+              "transforms": []
             },
             {
               "scoreRefs": [0, 1, 2],
