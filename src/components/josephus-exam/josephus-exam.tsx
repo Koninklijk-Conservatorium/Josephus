@@ -7,7 +7,7 @@ import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
 })
 export class JosephusExam {
   @Prop() href?: string;
-  @State() spec?: ExamSpec;
+  @Prop() spec?: ExamSpec;
   @State() challenge: number | undefined = undefined;
 
   // @Method()
