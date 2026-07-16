@@ -1,6 +1,6 @@
 {
   "name": "josephus",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Web components for music theory testing developed at Koninklijk Conservatorium Den Haag.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
