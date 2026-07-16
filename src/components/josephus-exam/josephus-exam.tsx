@@ -17,7 +17,7 @@ export class JosephusExam {
   // }
 
   @Watch('href')
-  reset() {
+  async reset() {
     this.href = undefined
     this.spec = undefined
     this.challenge = undefined
