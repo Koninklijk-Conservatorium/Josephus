@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `href`   | `href`    |             | `string` | `undefined` |
+| Property | Attribute | Description | Type                                                | Default     |
+| -------- | --------- | ----------- | --------------------------------------------------- | ----------- |
+| `href`   | `href`    |             | `string`                                            | `undefined` |
+| `spec`   | --        |             | `{ $schema: string; challenges: ChallengeSpec[]; }` | `undefined` |
 
 
 ## Dependencies
