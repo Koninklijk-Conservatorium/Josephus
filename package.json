@@ -1,6 +1,6 @@
 {
   "name": "josephus",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Web components for music theory testing developed at Koninklijk Conservatorium Den Haag.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -38,20 +38,20 @@
   },
   "devDependencies": {
     "@stencil/core": "^4.43.5",
-    "@stencil/vitest": "^1.13.0",
+    "@stencil/vitest": "^1.14.0",
     "@tonejs/midi": "^2.0.28",
     "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.10",
     "@types/mustache": "^4.2.6",
-    "@types/node": "^25.9.3",
+    "@types/node": "^25.9.5",
     "@types/verovio": "^5.1.0",
-    "@vitest/browser-playwright": "^4.1.8",
-    "playwright": "^1.60.0",
+    "@vitest/browser-playwright": "^4.1.10",
+    "playwright": "^1.61.1",
     "tone": "^15.1.22",
     "ts-json-schema-generator": "^2.9.0",
-    "tsx": "^4.22.4",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   },
   "license": "MIT",
   "dependencies": {
