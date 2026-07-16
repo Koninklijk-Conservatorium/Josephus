@@ -1,0 +1,78 @@
+{
+  "$schema": "../../schemas/josephus-exam.schema.json",
+  "challenges": [
+    {
+      "tasks": [
+        {
+          "scores": [
+            {
+              "source": "swiss-folksongs",
+              "entity": "score",
+              "transforms": [],
+              "$comment": "use Segmenter!"
+            }
+          ],
+          "fields": [
+            {
+              "type": "legend",
+              "scoreRefs": [0],
+              "transforms": [
+                {
+                  "type": "extractor",
+                  "feature": "pitches",
+                  "unique": true,
+                  "order": "ascending"
+                }
+              ],
+              "repr": ["score"],
+              "gui": "display",
+              "items": 1,
+              "description": "Find this pitch..."
+            },
+            {
+              "type": "legend",
+              "scoreRefs": [0],
+              "transforms": [{
+                "type": "segmenter",
+                "feature": "brackets",
+                "$func": "phrase"
+              }],
+              "repr": ["score", "audio"],
+              "gui": "quiz",
+              "items": "all",
+              "description": "(Full score segmented)"
+            },
+            {
+              "type": "question",
+              "scoreRefs": [0],
+              "transforms": [],
+              "repr": ["audio"],
+              "gui": "display",
+              "items": 1,
+              "description": "...in this melody!"
+            },
+            {
+              "type": "answer",
+              "scoreRefs": [0],
+              "$comment": "change to: extractor - durations.",
+              "transforms": [
+                {
+                  "type": "filter",
+                  "feature": "pitches"
+                },
+                {
+                  "type": "filter",
+                  "feature": "accidentals"
+                }
+              ],
+              "repr": ["score"],
+              "gui": "display",
+              "items": 1,
+              "description": "Click on the note you think it has the selected pitch."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
