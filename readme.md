@@ -17,7 +17,7 @@ Josephus components can be used with your website to attach a music-theory-relat
 
 - [StencilJS](https://stenciljs.com) for web component development.
 - [Verovio](https://www.verovio.org/index.xhtml) for score rendering.
-- [Music21j](https://tarmo.uuu.ee/varia/failid/komp/music21j/doc/index.html) for examples generation.
+- [Mustache.js](https://github.com/janl/mustache.js/) for MEI score snippets generation.
 - [Tone.js](https://tonejs.github.io) for audio playback.
 
 ## Installation

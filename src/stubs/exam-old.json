@@ -34,7 +34,7 @@
               "repr": ["audio", "score"],
               "gui": "display",
               "items": 1,
-              "description": "Music21j example."
+              "description": "An example."
             },
             {
               "type": "question",
