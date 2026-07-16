@@ -22,7 +22,7 @@ export class JosephusTask extends VerovioComponent {
   async componentWillRender() {
     if (!(this.verovio && this.spec)) return;
     // const scoresTXT = spec.scores.map(scoreSpec => {
-    // This function should handle various data retrieval methods (files, music21j etc).
+    // This function should handle various data retrieval methods (files, mei templates etc).
     this.scores = []
     for await (let scoreSpec of this.spec.scores) {
       // if (scoreSpec.source === '') {
