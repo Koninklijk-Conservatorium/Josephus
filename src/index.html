@@ -24,15 +24,15 @@
         document.dispatchEvent(new CustomEvent('josephus-tonemidi-initialized'));
 
         fetch('stubs/library.json')
-          // fetch('https://cappellaboanerges.nl/josephus-library/library.json')
           .then(r => r.json())
           .then(lib => {
             window.josephus.library = lib.library;
             document.dispatchEvent(new CustomEvent('josephus-library-initialized'));
           });
 
+        window.josephus.verovio = verovio
         verovio.module.onRuntimeInitialized = async () => {
-          window.josephus.verovio = verovio //new verovio.toolkit();
+          window.josephus.verovio = verovio
           document.dispatchEvent(new CustomEvent('josephus-verovio-initialized'));
         };
       });
