@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
+import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'josephus-exam',
@@ -9,6 +9,13 @@ export class JosephusExam {
   @Prop() href?: string;
   @State() spec?: ExamSpec;
   @State() challenge: number | undefined = undefined;
+
+  @Watch('href') async load() {
+    if (!this.href || this.href === '') {
+      this.challenge = undefined
+      this.spec = undefined
+    }
+  }
 
   private examScreen() {
     return <Host>
@@ -31,10 +38,6 @@ export class JosephusExam {
 
   async componentWillRender() {
     if (!(this.spec || this.href)) return
-    if (!this.href) {
-      this.challenge = undefined
-      this.spec = undefined
-    }
     this.spec ??= await fetch(this.href!).then(r => r.json());
   }
 
