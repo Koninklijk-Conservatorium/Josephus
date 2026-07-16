@@ -24,7 +24,7 @@ abstract class MEISegmenter extends MEITransform {
       For now, apply only measureRange by filtering measures.
       (see: FutureMilestoneSpec)
     */
-    if (!selection.measureRange.start && !selection.measureRange.end) {
+    if ("measureRange" in selection.measureRange) {
       console.warn('Segmenter: segmenting on measureRange string not yet supported.')
       return mei
     }
@@ -90,7 +90,6 @@ export class MEIBracketsSegmenter extends MEISegmenter {
     return mei
   }
 }
-
 
 
 // get chordsWithFermata(): MEIDocument {

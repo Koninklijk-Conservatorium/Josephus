@@ -2,6 +2,8 @@ import { Component, h, Prop, type JSX } from '@stencil/core';
 import type { VerovioOptions } from 'verovio';
 import { VerovioComponent } from '../../utils/VerovioComponent';
 
+
+
 type ScoreSVG = string;
 
 @Component({
@@ -14,6 +16,7 @@ export class JosephusSnippet extends VerovioComponent {
   @Prop() href: string | null = null;
   @Prop({ mutable: true }) data: string | null = null;
   @Prop() repr: ScoreRepr[] = ['label', 'audio', 'score'];
+  @Prop() select: SelectionMEI = { measureRange: { measureRange: 'start-end' } };
   @Prop() scoreOptions: VerovioOptions = {
     adjustPageHeight: true,
     adjustPageWidth: true,
@@ -21,6 +24,7 @@ export class JosephusSnippet extends VerovioComponent {
     scaleToPageSize: false,
     footer: 'none',
     header: 'none',
+    breaks: "none"
   };
 
   get score() {
@@ -50,8 +54,14 @@ export class JosephusSnippet extends VerovioComponent {
     this.data ??= await fetch(this.href!)
       .then(resp => resp.text())
       .then(scoreTXT => scoreTXT);
-    if (!this.data) return console.warn('Cannot load data for snippet: ', this.data)
+    if (!this.data) {
+      return console.warn('Cannot load data for snippet: ', this.data)
+    }
+    // TO DO: not supporting eventRange yet.
+    console.log(this.select.measureRange)
+    this.verovio.select(this.select.measureRange)
     this.loadData(this.data, this.scoreOptions);
+    console.log(this.verovio.getMEI())
   }
 
   render() {

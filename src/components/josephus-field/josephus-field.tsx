@@ -1,5 +1,7 @@
 import { Component, Prop, h } from '@stencil/core';
 import { MEIParser } from '../../utils/MEIParser';
+import { element, elements } from '../../utils/random';
+
 
 @Component({
   tag: 'josephus-field',
@@ -8,10 +10,11 @@ import { MEIParser } from '../../utils/MEIParser';
 })
 export class JosephusField {
 
-  private DO_NOT_RENDER = false;
-
   @Prop() spec: FieldSpec | undefined
-  @Prop() scores: StringMEI[][] = [] // TO DO: MEI String!
+  @Prop() scores: ScoreData[] = []//StringMEI[] = [] // TO DO: MEI String!
+  @Prop() snippets: Snippet[] = []
+
+  private DO_NOT_RENDER = false;
 
   /**
    * Turn all the received scores into
@@ -21,40 +24,59 @@ export class JosephusField {
    */
   componentWillRender() {
     if (!this.spec) return
-    this.scores = this.spec.scoreRefs.map(i => {
-      // TO DO: score vs score[]
-      const score: StringMEI = this.scores[i][0]; // [0] for now.
-      const doc = new MEIParser(this.spec!.transforms).parseFromString(score)
+    this.scores.forEach(data => {
+      const doc = new MEIParser(this.spec!.transforms).parseFromString(data.mei)
       const scoreTransformed = new XMLSerializer().serializeToString(doc)
-      // this.verovio!.select()
-      // const mei = this.getMEI() // does it work with 'select'?
-      // const doc = MEIDocument.parse(mei)
-      // const extraction = field.extractor ? doc[field.extractor] : doc; // HERE IS ISSUE
-      // field.filter.forEach(f => extraction[`${f}Filter`]());
-      // return
-      return [scoreTransformed as StringMEI]
+      data.mei = scoreTransformed
+      data.segments = doc.selections
     });
+    this.snippets = this.getSnippets()
+  }
+
+  /**
+   * Prepare score snippet for displayer.
+   * @returns
+   */
+  private getSnippets(): Snippet[] {
+    if (!this.spec) return [{ mei: '', segment: { measureRange: { measureRange: 'start-end' } }}]
+    if (this.scores.length < 1) return []
+    const singleScore = this.scores.length === 1
+    const items = !singleScore ? this.scores : this.scores[0].segments
+    const n = typeof this.spec.items === 'number' ? this.spec.items : { all: items.length }[this.spec.items]
+    if (singleScore) {
+      const score = this.scores[0]
+      const arr = score.segments.map(segment => ({
+        mei: score.mei,
+        segment: segment
+      }))
+      // return elements(arr, n)
+      return arr.slice(0, n)
+    }
+    const arr = this.scores.map(score => ({
+      mei: score.mei,
+      segment: element(score.segments)
+    }))
+    return elements(arr, n)
   }
 
   handleDisplay() {
-    return this.scores.map(score => <josephus-snippet data={score[0]} repr={this.spec!.repr}></josephus-snippet>);
+    return this.snippets.map(snippet => <josephus-snippet data={snippet.mei} select={snippet.segment} repr={this.spec!.repr}></josephus-snippet>);
   }
 
-  handleQuizField(value: number | string) {
+  handleQuizField(i: number) {
+    const snippet = this.snippets[i]
     return (
       <div>
-        <input type="radio" name="dummy" value={value} id={`josephus-quiz-choice-${value}`} />
-        <label htmlFor={`josephus-quiz-choice-${value}`}>
-          {this.scores.map(score => (
-            <josephus-snippet data={score[0]} repr={this.spec!.repr} />
-          ))}
+        <input type="radio" name="dummy" value={i} id={`josephus-quiz-choice-${i}`} />
+        <label htmlFor={`josephus-quiz-choice-${i}`}>
+          <josephus-snippet data={snippet.mei} select={snippet.segment} repr={this.spec!.repr} />
         </label>
       </div>
     );
   }
 
   handleQuiz() {
-    return Array.from({ length: this.spec!.items }, (_, i) => i).map(i => this.handleQuizField(i));
+    return Array.from({ length: this.snippets.length }, (_, i) => i).map(i => this.handleQuizField(i));
   }
 
 
