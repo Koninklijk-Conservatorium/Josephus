@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                     | Default     |
-| -------- | --------- | ----------- | ------------------------ | ----------- |
-| `spec`   | --        |             | `{ tasks: TaskSpec[]; }` | `undefined` |
+| Property | Attribute | Description | Type                                                              | Default     |
+| -------- | --------- | ----------- | ----------------------------------------------------------------- | ----------- |
+| `spec`   | --        |             | `` { category?: `#/categories/${string}`; tasks: TaskSpec[]; } `` | `undefined` |
 
 
 ## Dependencies
