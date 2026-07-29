@@ -27,12 +27,13 @@ export class JosephusExam {
     return <div part="category-list">
       {
         Object.entries(categories).map(entry => {
-          const name = entry[0] as ChallengeCategoryRef
+          const name = entry[0].split('/').at(-1) as ChallengeCategoryRef // TO DO: this JSONPointer is resolved manually. Make it automatic.
           const challenges = entry[1]
           const category = this.spec?.categories[name]
+          console.log(category)
           return (
             <div part="category">
-              <div part="category-description">
+              <div part="category-description" class={name}>
                 <h3 part="category-title">{category?.label ?? ""}</h3>
                 <div part="category-instruction">{category?.instruction ?? ""}</div>
               </div>

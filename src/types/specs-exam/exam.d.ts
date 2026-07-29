@@ -31,11 +31,11 @@ type TaskSpec = {
 };
 
 type ChallengeSpec = {
-  category?: ChallengeCategoryRef; // Referencing one of Exam's category.
+  category?: `#/categories/${ChallengeCategoryRef}`; // Referencing one of Exam's category.
   tasks: TaskSpec[];
 };
 
-type ChallengeCategoryRef = `#/categories/${string}`
+type ChallengeCategoryRef = string
 
 type ChallengeCategory = {
   label: string,
