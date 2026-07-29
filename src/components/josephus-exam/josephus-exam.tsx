@@ -73,7 +73,7 @@ export class JosephusExam {
     if (!this.spec) return <div>Josephus Exam not provided.</div>;
     return (<div part="exam">
       <h1 part="title">{this.spec.title}</h1>
-      <h1 part="title">{this.spec.instruction}</h1>
+      <h2 part="instruction">{this.spec.instruction}</h2>
       {
         this.challenge === undefined
         ? this.examScreen()
