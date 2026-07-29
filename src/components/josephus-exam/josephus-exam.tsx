@@ -26,14 +26,15 @@ export class JosephusExam {
 
     return <div part="category-list">
       {
-        Object.entries(categories).map(category => {
-          const name = category[0] as ChallengeCategoryRef
-          const challenges = category[1]
+        Object.entries(categories).map(entry => {
+          const name = entry[0] as ChallengeCategoryRef
+          const challenges = entry[1]
+          const category = this.spec?.categories[name]
           return (
             <div part="category">
               <div part="category-description">
-                <h3 part="category-title">{this.spec?.categories[name]?.label ?? ""}</h3>
-                <div part="category-instruction">{this.spec?.categories[name]?.instruction ?? ""}</div>
+                <h3 part="category-title">{category?.label ?? ""}</h3>
+                <div part="category-instruction">{category?.instruction ?? ""}</div>
               </div>
               <div part="challenge-list">
                 {challenges.map((challenge, i) => (
