@@ -2,7 +2,7 @@
   "name": "josephus",
   "version": "0.0.25",
   "description": "Web components for music theory testing developed at Koninklijk Conservatorium Den Haag.",
-  "main": "dist/cjs/index.js",
+  "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
@@ -34,7 +34,7 @@
     "test": "stencil-test --prod",
     "test:watch": "stencil-test --prod --watch",
     "generate": "stencil generate",
-    "dist": "pnpm build && git push && git switch main && git merge development && pnpm build && git push && pnpm publish && git switch development"
+    "dist": "pnpm build && git push && git switch main && git merge development && pnpm build && git push && pnpm publish && git switch development || git switch development"
   },
   "devDependencies": {
     "@stencil/core": "^4.43.5",
