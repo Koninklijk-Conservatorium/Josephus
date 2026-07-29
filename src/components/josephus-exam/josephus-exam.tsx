@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'josephus-exam',
@@ -10,35 +10,56 @@ export class JosephusExam {
   @Prop() spec?: ExamSpec;
   @State() challenge: number | undefined = undefined;
 
-  // @Method()
-  // async reset() {
-  //   this.challenge = undefined
-  //   this.spec = undefined
-  // }
-
-  // @Watch('href')
-  // async reset() {
-  //   this.href = undefined
-  //   this.spec = undefined
-  //   this.challenge = undefined
-  // }
-
   private examScreen() {
-    return <Host>
-      {this.spec!.challenges.map((_, i) => (
-        <button onClick={() => this.challenge = i}>Challenge {i + 1}</button>
-      ))}
-    </Host>
+
+    /*
+      Group challenges by categories.
+    */
+
+    type Categories = Record<ChallengeCategoryRef | "_unspecified", ChallengeSpec[]>
+
+    const categories: Categories = { _unspecified: [] };
+    this.spec!.challenges.forEach((challenge) => {
+      const category = challenge.category ?? "_unspecified";
+      (categories[category] ??= []).push(challenge);
+    })
+
+    return <div part="category-list">
+      {
+        Object.entries(categories).map(category => {
+          const name = category[0] as ChallengeCategoryRef
+          const challenges = category[1]
+          return (
+            <div part="category">
+              <div part="category-description">
+                <h3 part="category-title">{this.spec?.categories[name]?.label ?? ""}</h3>
+                <div part="category-instruction">{this.spec?.categories[name]?.instruction ?? ""}</div>
+              </div>
+              <div part="challenge-list">
+                {challenges.map((challenge, i) => (
+                  <button part="challenge-button" onClick={() => this.challenge = this.spec?.challenges.indexOf(challenge)}>
+                    <div part="challenge-button-description">
+                      <div part="challenge-button-title">Challenge {i + 1}</div>
+                      <div part="challenge-button-score">0 (0%) &gt;</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )
+        })
+      }
+    </div>
   }
 
   private challengeScreen() {
     return (
-      <Host>
+      <div part="challenge">
         <josephus-challenge
           spec={this.spec!.challenges[this.challenge!]}
         />
         <button onClick={() => this.challenge = undefined}>Back to exam.</button>
-      </Host>
+      </div>
     );
   }
 
@@ -48,6 +69,18 @@ export class JosephusExam {
   }
 
   render() {
-    return this.spec ? this.challenge === undefined ? this.examScreen() : this.challengeScreen() : <div>Josephus Exam not provided.</div>;
+    if (!this.spec) return <div>Josephus Exam not provided.</div>;
+    return (<div part="exam">
+      <div part="title">{this.spec.title}</div>
+      <div part="categories">
+        {
+          this.challenge === undefined
+          ? this.examScreen()
+            : this.challengeScreen()
+        }
+      </div>
+    </div>)
+
+
   }
 }

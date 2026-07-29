@@ -1,7 +1,14 @@
 {
   "$schema": "../../schemas/josephus-exam.schema.json",
+  "categories": {
+    "recognition": {
+      "label": "Recognize",
+      "instruction": "Connect the same music across aural and notational domains."
+    }
+  },
   "challenges": [
     {
+      "category": "recognition",
       "tasks": [
         {
           "$library": "",

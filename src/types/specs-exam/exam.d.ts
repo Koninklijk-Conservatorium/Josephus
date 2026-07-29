@@ -31,10 +31,21 @@ type TaskSpec = {
 };
 
 type ChallengeSpec = {
+  category?: ChallengeCategoryRef; // Referencing one of Exam's category.
   tasks: TaskSpec[];
 };
 
+type ChallengeCategoryRef = `#/categories/${string}`
+
+type ChallengeCategory = {
+  label: string,
+  instruction: string,
+}
+
 type ExamSpec = {
   $schema: string;
+  title: "Music Theory Test" | string;
+  instruction: "Choose a challenge to begin" | string;
+  categories: {[key: ChallengeCategoryRef]: ChallengeCategory};
   challenges: ChallengeSpec[];
 };
