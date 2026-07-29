@@ -1,5 +1,7 @@
 {
   "$schema": "../../schemas/josephus-exam.schema.json",
+  "title": "Music Theory Test",
+  "instruction": "Choose a challenge to begin",
   "categories": {
     "recognition": {
       "label": "Recognize",
@@ -8,7 +10,7 @@
   },
   "challenges": [
     {
-      "category": "recognition",
+      "category": "#/categories/recognition",
       "tasks": [
         {
           "$library": "",
