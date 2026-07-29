@@ -7,17 +7,16 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type                                                                                                                                                             | Default     |
-| -------- | --------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `href`   | `href`    |             | `string`                                                                                                                                                         | `undefined` |
-| `spec`   | --        |             | `` { $schema: string; title: string; instruction: string; categories: { [key: `#/categories/${string}`]: ChallengeCategory; }; challenges: ChallengeSpec[]; } `` | `undefined` |
+| Property | Attribute | Description | Type                                                                                                                                       | Default     |
+| -------- | --------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `href`   | `href`    |             | `string`                                                                                                                                   | `undefined` |
+| `spec`   | --        |             | `{ $schema: string; title: string; instruction: string; categories: { [key: string]: ChallengeCategory; }; challenges: ChallengeSpec[]; }` | `undefined` |
 
 
 ## Shadow Parts
 
 | Part                             | Description |
 | -------------------------------- | ----------- |
-| `"categories"`                   |             |
 | `"category"`                     |             |
 | `"category-description"`         |             |
 | `"category-instruction"`         |             |
@@ -30,6 +29,7 @@
 | `"challenge-button-title"`       |             |
 | `"challenge-list"`               |             |
 | `"exam"`                         |             |
+| `"instruction"`                  |             |
 | `"title"`                        |             |
 
 
