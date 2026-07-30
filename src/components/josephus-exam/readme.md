@@ -15,22 +15,13 @@
 
 ## Shadow Parts
 
-| Part                             | Description |
-| -------------------------------- | ----------- |
-| `"category"`                     |             |
-| `"category-description"`         |             |
-| `"category-instruction"`         |             |
-| `"category-list"`                |             |
-| `"category-title"`               |             |
-| `"challenge"`                    |             |
-| `"challenge-button"`             |             |
-| `"challenge-button-description"` |             |
-| `"challenge-button-score"`       |             |
-| `"challenge-button-title"`       |             |
-| `"challenge-list"`               |             |
-| `"exam"`                         |             |
-| `"instruction"`                  |             |
-| `"title"`                        |             |
+| Part              | Description |
+| ----------------- | ----------- |
+| `"category-list"` |             |
+| `"challenge"`     |             |
+| `"exam"`          |             |
+| `"instruction"`   |             |
+| `"title"`         |             |
 
 
 ## Dependencies
