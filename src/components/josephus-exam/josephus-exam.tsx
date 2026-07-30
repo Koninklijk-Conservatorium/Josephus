@@ -31,17 +31,17 @@ export class JosephusExam {
           const challenges = entry[1]
           const category = this.spec?.categories[name]
           return (
-            <div part="category">
+            <div part="category" class={name}>
               <div part="category-description" class={name}>
-                <h3 part="category-title">{category?.label ?? ""}</h3>
-                <div part="category-instruction">{category?.instruction ?? ""}</div>
+                <h3 part="category-title" class={name}>{category?.label ?? ""}</h3>
+                <div part="category-instruction" class={name}>{category?.instruction ?? ""}</div>
               </div>
-              <div part="challenge-list">
+              <div part="challenge-list" class={name}>
                 {challenges.map((challenge, i) => (
-                  <button part="challenge-button" onClick={() => this.challenge = this.spec?.challenges.indexOf(challenge)}>
-                    <div part="challenge-button-description">
-                      <div part="challenge-button-title">Challenge {i + 1}</div>
-                      <div part="challenge-button-score">0 (0%) &gt;</div>
+                  <button part="challenge-button" onClick={() => this.challenge = this.spec?.challenges.indexOf(challenge)} class={name}>
+                    <div part="challenge-button-description" class={name}>
+                      <div part="challenge-button-title" class={name}>Challenge {i + 1}</div>
+                      <div part="challenge-button-score" class={name}>0 (0%) &gt;</div>
                     </div>
                   </button>
                 ))}
