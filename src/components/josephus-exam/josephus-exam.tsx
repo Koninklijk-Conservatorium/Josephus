@@ -39,12 +39,14 @@ export class JosephusExam {
               </div>
               <div part={part("challenge-list")}>
                 {challenges.map((challenge, i) => (
-                  <button part={part("challenge-button")} onClick={() => this.challenge = this.spec?.challenges.indexOf(challenge)}>
-                    <div part={part("challenge-button-description")}>
-                      <div part={part("challenge-button-title")}>Challenge {i + 1}</div>
-                      <div part={part("challenge-button-score")}>0 (0%) &gt;</div>
-                    </div>
-                  </button>
+                  <div part={part("challenge-button-div")}>
+                    <button part={part("challenge-button")} onClick={() => this.challenge = this.spec?.challenges.indexOf(challenge)}>
+                      <div part={part("challenge-button-description")}>
+                        <div part={part("challenge-button-title")}>Challenge {i + 1}</div>
+                        <div part={part("challenge-button-score")}>0 (0%) &gt;</div>
+                      </div>
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
